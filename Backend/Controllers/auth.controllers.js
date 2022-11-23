@@ -8,7 +8,6 @@ dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
 
 function generateToken(user) {
-    console.log(JWT_SECRET)
   return jwt.sign(
     {
       _id: user._id,
@@ -19,7 +18,7 @@ function generateToken(user) {
   );
 }
 
-async function login(req, res) {
+const login =async (req, res)=> {
   const user = req.body;
 
   let { email, password } = user;
@@ -36,6 +35,8 @@ async function login(req, res) {
 
       return res.status(200).send({
         status: "success",
+        name : existingUser.name,
+        id : existingUser._id,
         token
       });
     } else {
@@ -52,7 +53,7 @@ async function login(req, res) {
   }
 }
 
-async function getLoggedInUser(req, res) {
+const getLoggedInUser =async (req, res)=> {
   const { user } = req;
 
   if (user) {
@@ -68,7 +69,7 @@ async function getLoggedInUser(req, res) {
   }
 }
 
-async function register(req, res) {
+const register =async (req, res)=> {
   const user = req.body;
 
   let { name, email, password } = user;
@@ -104,10 +105,34 @@ async function register(req, res) {
   }
 }
 
+const checkUserExistance =async (req, res)=>{
+  const user = req.body;
+
+  let { email  } = user;
+
+  let existingUser = await userModel.findOne({
+    email,
+  });
+
+  if (existingUser) {
+    return res.status(200).send({
+      status: "Success",
+      message: "User Exist",
+    });
+  }
+  else{
+    return res.status(400).send({
+      status: "error",
+      message: "User does not exist",
+    });
+  }
+}
+
 
 
 export {
   register,
   login,
-  getLoggedInUser
+  getLoggedInUser,
+  checkUserExistance
 };
