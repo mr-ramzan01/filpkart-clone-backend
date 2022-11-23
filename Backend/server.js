@@ -15,6 +15,16 @@ app.use(cors());
 app.use('/auth', userRouter);
 app.use('/cart', cartRouter);
 
+const errorHandler = (err, req, res,next) => {
+  if(req.headersSent) {
+      return next(err);
+  }
+  res.status(500).send({
+      error: err
+  });
+}
+app.use(errorHandler); // default errorHandler
+
 
 app.listen(Port, () => {
   connection();
