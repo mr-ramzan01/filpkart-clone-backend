@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+// import productRouter from "./router/products.router.js";
 import userRouter from "./router/auth.router.js";
 import connection from "./config/db.js";
 
