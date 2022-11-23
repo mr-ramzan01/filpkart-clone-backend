@@ -27,7 +27,8 @@ const orderItemSchema = new mongoose.Schema(
     }
   },
   {
-    timestamps: true,
+      versionKey: false,
+      timestamps: true
   }
 );
 const orderItemModel = mongoose.model("orderItem", orderItemSchema);
