@@ -2,82 +2,99 @@ import mongoose from "mongoose";
 
 const productsSchema = new mongoose.Schema({
     category_id: {
-        typeof: Number,
+        type: Number,
         required: true
     },
     category_name: {
-        typeof: String,
+        type: String,
         required: true
     },
     image: {
-        typeof: String,
+        type: String,
         required: true
     },
     description: {
-        typeof: String,
+        type: String,
         required: true
     },
     stars: {
-        typeof: Number,
-        required: true
+        type: Number,
+        required: false
     },
     ratings: {
-        typeof: String,
-        required: true
+        type: String,
+        required: false
     },
     reviews: {
-        typeof: String,
-        required: true
+        type: String,
+        required: false
     },
     warranty: {
-        typeof: String,
-        required: true
+        type: String,
+        required: false
     },
     new_price: {
-        typeof: Number,
+        type: Number,
         required: true
     },
     old_price: {
-        typeof: Number,
+        type: Number,
         required: true
     },
     discount: {
-        typeof: Number,
+        type: Number,
         required: true
     },
     delivery_type: {
-        typeof: String,
+        type: String,
         required: true
     },
     offer: {
-        typeof: String,
-        required: true
+        type: String,
+        required: false
     },
     offer2: {
-        typeof: String,
-        required: true
+        type: String,
+        required: false
     },
     hidden_stars: {
-        typeof: Number,
+        type: Number,
         required: true
     },
     item_id: {
-        typeof: Number,
+        type: Number,
         required: true
     },
     quantity: {
-        typeof: Number,
-        required: true
+        type: Number,
+        required: false
     },
     size: {
-        typeof: String,
-        required: true
+        type: String,
+        required: false
+    },
+    more_data: {
+        type: String,
+        required: false
+    },
+    color: {
+        type: String,
+        required: false
+    },
+    brand: {
+        type: String,
+        required: false
+    },
+    id: {
+        type: Number,
+        required: false
     }
 },{
     versionKey: false,
     timeseries: true
 })
 
+const products = mongoose.model('products', productsSchema);
 
-export const products = mongoose.model('products', productsSchema);
+export default products
 
