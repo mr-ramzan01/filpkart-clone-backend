@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import userRouter from "./router/auth.router.js";
 import connection from "./config/db.js";
+import productRouter from "./router/products.router.js";
 import logger from "./middleware/logger.js";
 import { errorhandler } from "./middleware/errorhandler.js";
 import { assignAuth } from "./middleware/assignAuth.js";
@@ -18,9 +19,11 @@ app.use(logger)
 
 
 app.use('/auth', userRouter);
+app.use('/products', productRouter)
 
 
 app.listen(Port, () => {
   connection();
   console.log(`server is running at http://localhost:${Port}`);
 });
+ 
