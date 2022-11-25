@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
-import { Signup } from "./SignUp";
-import { useState, useEffect } from "react";
-import { Link, Navigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useContext } from 'react'
+import { Signup } from './SignUp'
+import { useState, useEffect } from 'react'
+import { Link, Navigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import {
   Modal,
   ModalOverlay,
@@ -156,11 +156,11 @@ export function Login() {
     });
   };
   const OTPVALUES = () => {
-    toast("WRONG OTP", {
-      position: "top-center",
-    });
-    setIsAuth("");
-  };
+    toast('WRONG OTP', {
+      position: 'top-center',
+    })
+    setIsAuth('')
+  }
   const Otp = () => {
     setIsCheck(true);
     generateOtp();
@@ -171,7 +171,7 @@ export function Login() {
     setIsCheck(false);
   };
 
-  let popotp = JSON.parse(localStorage.getItem("otp"));
+  let popotp = JSON.parse(localStorage.getItem('otp'))
 
   const sukantaotp = () => {
     if (isAuth === popotp) {
@@ -406,7 +406,7 @@ export function Login() {
                     </>
                   ) : (
                     <>
-                      {" "}
+                      {' '}
                       <Button
                         onClick={Pass}
                         boxShadow="md"
@@ -429,8 +429,8 @@ export function Login() {
                       textAlign="center"
                       color="#2f74f0"
                     >
-                      New to Flipkart? {<Signup onClose={onClose} />}{" "}
-                    </Text>{" "}
+                      New to Flipkart? {<Signup onClose={onClose} />}{' '}
+                    </Text>{' '}
                   </Link>
                 </FormControl>
                 <Button onClick={googleRequest}>Login With Google</Button>
@@ -440,5 +440,5 @@ export function Login() {
         </ModalContent>
       </Modal>
     </>
-  );
+  )
 }
