@@ -6,11 +6,7 @@ import { MdSecurity } from "react-icons/md";
 import { Navigate } from "react-router-dom";
 
 
-
-
 function DeliveryPage(){
-
-
 
     const { cartData } = useContext(CartContext);
 
@@ -56,7 +52,6 @@ function DeliveryPage(){
     if(cartData.length === 0 ){
     //    return  <Navigate to='/cart'/>
     }
-
 
     const handelCheckAddress= ()=>{
         setAllFilled(true);

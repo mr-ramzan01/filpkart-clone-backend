@@ -18,7 +18,7 @@ const Filter = ({ getCheckboxProps, setPriceRange, priceRange }) => {
                         <Stack spacing={[1]} direction={['column']} >
                             <Checkbox spacing='0.8rem' {...getCheckboxProps({ value: 'appliances' })} ><Text fontSize={'small'} fontWeight='500' >Appliances</Text></Checkbox>
                             <Checkbox spacing='0.8rem' {...getCheckboxProps({ value: 'electronics' })}><Text fontSize={'small'} fontWeight='500'  >Electronics</Text></Checkbox>
-                            <Checkbox spacing='0.8rem' {...getCheckboxProps({ value: "fashion" })} ><Text fontSize={'small'} fontWeight='500'>Faishon</Text></Checkbox>
+                            <Checkbox spacing='0.8rem' {...getCheckboxProps({ value: "fashion" })} ><Text fontSize={'small'} fontWeight='500'>Fashion</Text></Checkbox>
                             <Checkbox spacing='0.8rem' {...getCheckboxProps({ value: 'grocery' })} ><Text fontSize={'small'} fontWeight='500' >Groceries</Text></Checkbox>
                             <Checkbox spacing='0.8rem' {...getCheckboxProps({ value: 'mobiles' })} ><Text fontSize={'small'} fontWeight='500' >Mobiles</Text></Checkbox>
                             <Checkbox spacing='0.8rem' {...getCheckboxProps({ value: 'home' })} ><Text fontSize={'small'} fontWeight='500' >Home</Text></Checkbox>

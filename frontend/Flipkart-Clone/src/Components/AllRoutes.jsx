@@ -12,6 +12,8 @@ import Home from './Home/Home'
 import OrderPage from './OrderPage/OrderPage'
 import Products from './Products.jsx/Products'
 import Viewpage from './ProductsView.jsx/Viewpage'
+import Sellers from './seller/Seller'
+import SellerPage from './seller/SellerPage'
 
 const AllRoutes = () => {
     return (
@@ -44,6 +46,8 @@ const AllRoutes = () => {
                         <OrderPage/>
                     </PrivateRoutes>
                 }/>
+                <Route path='/sellers' element={<Sellers/>}/>
+                <Route path='/sellers/addProducs' element={<SellerPage/>} />
             </Routes>
         </>
     )

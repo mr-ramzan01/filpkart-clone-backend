@@ -329,7 +329,9 @@ const Navbar = () => {
             fontWeight="600"
             cursor={'pointer'}
           >
-            Become a Seller
+            <NavLink to={'/sellers'}>
+              Become a Seller
+            </NavLink>
           </Box>
 
           {/* ==================================more============= */}
