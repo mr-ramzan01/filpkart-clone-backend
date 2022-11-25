@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { Login } from './Login'
+import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { Alert, AlertIcon, AlertTitle, position } from '@chakra-ui/react'
@@ -21,6 +22,7 @@ import {
   Link,
 } from '@chakra-ui/react'
 export function Signup() {
+  const navigate = useNavigate()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const initialRef = React.useRef(null)
   const finalRef = React.useRef(null)
@@ -109,11 +111,13 @@ export function Signup() {
     }
   }, [error])
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (cb,e) => {
     e.preventDefault()
     setError(validate(inputValues))
     setIsSubmit(true)
     setInputValues(initialvalues)
+    cb()
+    // navigate('/login')
   }
 
   return (
@@ -179,7 +183,7 @@ export function Signup() {
                     placeholder="Enter Email"
                     value={inputValues.email}
                     onChange={handleChange}
-                    required
+                    // required
                   />
                   <Text color="red" fontSize="xs">
                     {error.email}
@@ -193,7 +197,7 @@ export function Signup() {
                     placeholder="Enter Password"
                     value={inputValues.password}
                     onChange={handleChange}
-                    required
+                    // required
                   />
                   <Text color="red" fontSize="xs">
                     {error.password}
@@ -209,15 +213,18 @@ export function Signup() {
                       Privacy Policy.
                     </Link>
                   </Text>
-
+                  
                   <Button
-                    onClick={handleSubmit}
+                    onClick={(e) => 
+                      handleSubmit(onClose,e)
+                    }
                     borderRadius="0.5"
                     marginTop="4"
                     padding="6"
                     color="white"
                     bg="#fb641b"
                     width="19.7rem"
+                   
                   >
                     CONTINUE
                   </Button>
