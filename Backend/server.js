@@ -6,6 +6,7 @@ import productRouter from "./router/products.router.js";
 import logger from "./middleware/logger.js";
 import { errorhandler } from "./middleware/errorhandler.js";
 import { assignAuth } from "./middleware/assignAuth.js";
+import addressRouter from './router/address.router.js'
 
 const Port = 8080
 
@@ -20,6 +21,7 @@ app.use(logger)
 
 app.use('/auth', userRouter);
 app.use('/products', productRouter)
+app.use('/address',addressRouter)
 
 
 app.listen(Port, () => {
