@@ -28,7 +28,10 @@ async function getGoogleOAuthTokens(code) {
     client_secret,
     "http://localhost:3000/google_OAuth"
   );
-  const scopes = ["https://www.googleapis.com/auth/userinfo.profile",'https://www.googleapis.com/auth/userinfo.email'];
+  const scopes = [
+    "https://www.googleapis.com/auth/userinfo.profile",
+    "https://www.googleapis.com/auth/userinfo.email",
+  ];
 
   oauth2Client.generateAuthUrl({
     access_type: "offline",
