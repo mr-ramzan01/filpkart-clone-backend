@@ -60,7 +60,7 @@ import { CartContext } from "../Context/CartContext";
 
 const Navbar = () => {
   const {cartData} = useContext(CartContext);
-  console.log(cartData, " cartData ");
+  // console.log(cartData, " cartData ");
 
   const {correct, setCorrect} = useContext(Authcontext)
 
@@ -277,7 +277,7 @@ const Navbar = () => {
                   <Center>
                     <Link color="#2874f0" fontSize='14px'>
                     {/* Sign Up */}
-                    <Signup/>
+                    <Register/>
                     </Link>
                   </Center>
                 </Flex>
