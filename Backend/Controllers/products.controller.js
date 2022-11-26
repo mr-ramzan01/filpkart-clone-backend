@@ -3,15 +3,46 @@ import  products  from '../Models/products.model.js';
 
 async function getProduct(req,res) {
     try {
+        // console.log(req.query)
+        // let {category} = req.query;
+        // let data;
+        // if(category) {
+        //     console.log("here")
+        //     data = await products.find({category_name: category})
+        // }
+        // else {
+        //     data = await products.find();
+
+        // }
+        // if(!data) {
+        //     return res.send(404).send({
+        //         status: 'Error',
+        //         message: "Not Found"
+        //     })
+        // }
+        // return res.send({
+        //     status: "Success",
+        //     data: data
+        // })
         console.log(req.query)
         // let data = await products.find();
         const page = parseInt(req.query.page) - 1 || 0;
 		const limit = parseInt(req.query.limit) || 5;
 		const search = req.query.q || "";
         console.log(search);
-		let sort = req.query.sort || "rating";
-		let category = req.query.category || "All";
+		let sort = req.query.sort || "rating"; //rating,asc
         // let order = req.query.order || "asc";
+		let category = req.query.category_name || "All";
+        // let lte_price = req.query.lte_price; gte_price
+        let range = req.query.range;
+        if(range){
+            var rangeArray = range.split(",")
+            var rangeBy = rangeArray[0];
+            console.log(rangeArray);
+            var gte_price = +rangeArray[1] || "";
+            var lte_price = +rangeArray[2] || "";
+            console.log(gte_price, lte_price, rangeBy);
+        }
 		const categoryOptions = [
 			"appliances",
 			"electronics",
@@ -24,17 +55,24 @@ async function getProduct(req,res) {
 
 		category === "All"
 			? (category = [...categoryOptions])
-			: (category = req.query.category.split(","));
+			: (category = req.query.category_name.split(","));
 		req.query.sort ? (sort = req.query.sort.split(",")) : (sort = [sort]);
 
 		let sortBy = {};
-		if (sort[1]) {
+		if(sort[1]){
 			sortBy[sort[0]] = sort[1];
-		} else {
+		}else{
 			sortBy[sort[0]] = "asc";
 		}
 
-		const product = await products.find({ description: { $regex: search, $options: "i" } })
+        let rangetest = range?{new_price: { $gte: gte_price, $lte: lte_price }}:{}
+        // console.log(rangetest);
+		let product = await products.find({$and: [
+            {description: { $regex: search, $options: "i" }},
+            // range?{new_price: { $gte: gte_price, $lte: lte_price }}:{}
+            rangetest
+            // {new_price: { $gte: gte_price, $lte: lte_price }}
+            ]})
 			.where("category_name")
 			.in([...category])
 			.sort(sortBy)
@@ -42,41 +80,21 @@ async function getProduct(req,res) {
 			.limit(limit);
 
 		const total = await products.countDocuments({
-			category: { $in: [...category] },
+			category_name: { $in: [...category] },
 			description: { $regex: search, $options: "i" },
+            // rangetest
+            // new_price: { $gte: gte_price, $lte: lte_price }
+            $and: [ rangetest ]
 		});
 
-		const response = {
+		const data = {
 			total,
 			page: page + 1,
 			limit,
-			// categorys: categoryOptions,
 			product
 		};
 
-		res.send(response);
-
-
-        // let {category} = req.query;
-        // let data;
-        // if(category) {
-        //     console.log("here")
-        //     data = await products.find({category_name: category})
-        // }
-        // else {
-        //     data = await products.find();
-        // }
-
-        // if(!data) {
-        //     return res.send(404).send({
-        //         status: 'Error',
-        //         message: "Not Found"
-        //     })
-        // }
-        // return res.send({
-        //     status: "Success",
-        //     data: data
-        // })
+		res.send(data);
     } catch (error) {
         return res.send(500).send({
             status: 'Error',
