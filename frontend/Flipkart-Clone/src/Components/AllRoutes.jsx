@@ -14,6 +14,8 @@ import { Login } from './Login/Login'
 import OrderPage from './OrderPage/OrderPage'
 import Products from './Products.jsx/Products'
 import Viewpage from './ProductsView.jsx/Viewpage'
+import SellerAddProducts from './sellers/SellerAddProducts'
+import SellerLogin from './sellers/SellerLogin'
 
 const AllRoutes = () => {
     return (
@@ -48,6 +50,9 @@ const AllRoutes = () => {
                 }/>
                 <Route path='/google_OAuth' element={<GoogleOAuth/>} />
                 <Route path='/login' element={<Login/>}></Route>
+
+                <Route path='/sellers' element={<SellerLogin/>}/>
+                <Route path='/sellers/addProducs' element={<SellerAddProducts/>} />
             </Routes>
         </>
     )
