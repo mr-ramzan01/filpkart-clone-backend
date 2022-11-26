@@ -9,6 +9,8 @@ import PaymentPage from './Cart/PayemntPage'
 import Summary from './Cart/Summary'
 import PrivateRoutes from './Context/PrivateRoutes'
 import Home from './Home/Home'
+import GoogleOAuth from './Login/GoogleOAuth'
+import { Login } from './Login/Login'
 import OrderPage from './OrderPage/OrderPage'
 import Products from './Products.jsx/Products'
 import Viewpage from './ProductsView.jsx/Viewpage'
@@ -44,6 +46,8 @@ const AllRoutes = () => {
                         <OrderPage/>
                     </PrivateRoutes>
                 }/>
+                <Route path='/google_OAuth' element={<GoogleOAuth/>} />
+                <Route path='/login' element={<Login/>}></Route>
             </Routes>
         </>
     )
