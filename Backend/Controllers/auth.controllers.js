@@ -4,6 +4,7 @@ import userModel from "../Models/user.model.js";
 import dotenv from "dotenv";
 import axios from "axios";
 import { google } from "googleapis";
+import jwt_decode from "jwt-decode";
 
 dotenv.config();
 
@@ -49,24 +50,44 @@ async function getGoogleOAuthTokens(code) {
 const googleOAuth = async (req, res) => {
   const { code } = req.query;
   const [access_token, id_token] = await getGoogleOAuthTokens(code);
-  console.log(access_token);
-  console.log();
-  console.log(id_token);
-  const url = `https://www.googleapis.com/oauth2/v3/userinfo?alt=json&access_token=${access_token}`;
-  const obj = { headers: { Authorization: `Bearer ${id_token}` } };
-  // const url = "https://www.googleapis.com/oauth2/v3/userinfo";
-  // const obj = {
-  //   headers: { Authorization: `Bearer ${id_token}` },
-  //   alt: "json",
-  //   access_token,
-  // };
-  let user = await axios.get(url, obj);
+  const user = jwt_decode(id_token);
 
-  console.log(user);
+  // console.log(1)
 
-  return res.send({
-    status: code,
-  });
+  if (user.email) {
+    let existingUser = await userModel.findOne({
+      email: user.email,
+    });
+
+    if (!existingUser) {
+      const password = bcrypt.hashSync("az@#1236547890azioziz");
+
+      let newUser = await userModel.create({
+        name: user.name,
+        email: user.email,
+        isAdmin: false,
+        password,
+      });
+
+      existingUser = await userModel.findOne({
+        email: newUser.email,
+      });
+    }
+
+    let token = generateToken(existingUser);
+
+    return res.status(200).send({
+      status: "success",
+      name: existingUser.name,
+      id: existingUser._id,
+      token,
+    });
+  } else {
+    return res.status(400).send({
+      status: "error",
+      message: "Your Email have been made private.",
+    });
+  }
 };
 
 const login = async (req, res) => {

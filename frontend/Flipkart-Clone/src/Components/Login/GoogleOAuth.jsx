@@ -1,28 +1,35 @@
-import axios from 'axios'
-import React from 'react'
-import { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import { useSearchParams } from 'react-router-dom/dist'
+import { Center, Spinner } from "@chakra-ui/react";
+import axios from "axios";
+import React from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function GoogleOAuth() {
-    // const {code,error} = useParams()
-  
-    const param = new URLSearchParams(window.location.search)
-    const code = param.get("code")
-
-    const getUsersData =async ()=>{
-      const data = await axios.get(`http://localhost:8080/auth/googleOAuth?code=${code}`)
-      console.log(data)
+  const naivigate = useNavigate();
+  const param = new URLSearchParams(window.location.search);
+  const code = param.get("code");
+  const getUsersData = async () => {
+    const res = await axios.get(
+      `http://localhost:8080/auth/googleOAuth?code=${code}`
+    );
+    console.log(res.data);
+    const { status, token, name } = res.data;
+    if (status === "success") {
+      localStorage.setItem("flipkartToken", token);
+      localStorage.setItem("flipkartUserName", name);
+      naivigate("/");
+    } else {
+      alert(res.data.message);
     }
+  };
 
-    useEffect(()=>{
-      getUsersData()
-    },[])
+  useEffect(() => {
+    getUsersData();
+  }, []);
 
   return (
-    <div>
-      Google OAuth{"  "}
-      {code}
+    <div style={{height: "350px"}} >
+      <Center mt='300px'><Spinner size='xl' /></Center>
     </div>
-  )
+  );
 }

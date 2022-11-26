@@ -60,7 +60,7 @@ import { CartContext } from "../Context/CartContext";
 
 const Navbar = () => {
   const {cartData} = useContext(CartContext);
-  console.log(cartData, " cartData ");
+  // console.log(cartData, " cartData ");
 
   const {correct, setCorrect} = useContext(Authcontext)
 
