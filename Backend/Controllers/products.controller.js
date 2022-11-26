@@ -71,7 +71,6 @@ async function getProduct(req,res) {
 			total,
 			page: page + 1,
 			limit,
-			// categorys: categoryOptions,
 			product
 		};
 

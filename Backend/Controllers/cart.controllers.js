@@ -1,5 +1,5 @@
 import jwt  from "jsonwebtoken";
-import cartItemModel from "../Models/cartItem.model"
+import cartItemModel from "../Models/cartItem.model.js"
 
 const getItems = async(req,res) => {
     const token = localStorage.getItem('token'); // take token from localStorage
