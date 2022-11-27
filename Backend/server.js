@@ -14,7 +14,7 @@ const Port = 8080
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json() );
 app.use(cors());
 app.use(assignAuth)
 app.use(logger)
