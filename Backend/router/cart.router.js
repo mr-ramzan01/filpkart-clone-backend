@@ -4,7 +4,7 @@ import express from 'express';
 import { addItem, updateItem,deleteItem,getItems} from '../Controllers/cart.controllers.js';
 
 const cartRouter = express.Router()
-app.use(cors());
+cartRouter.use(cors());
 
 cartRouter.post('/', addItem)
 cartRouter.get('/', getItems)

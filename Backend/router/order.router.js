@@ -3,7 +3,7 @@ import express from 'express';
 import { addItem, updateItem,deleteItem,getItems} from '../Controllers/order.controllers.js';
 
 const orderRouter = express.Router()
-app.use(cors());
+cartRouter.use(cors());
 
 orderRouter.post('/', addItem)
 orderRouter.get('/', getItems)
