@@ -15,12 +15,13 @@ export default function GoogleOAuth() {
     const res = await axios.get(
       `https://flipkart-api-new.onrender.com/auth/googleOAuth?code=${code}`
     );
-    console.log(res.data);
-    const { status, token, name, id } = res.data;
+    console.log(res, 'data here');
+    const { status, token, name, id, email } = res.data;
     if (status === "success") {
       setCorrect(true);
       setName(name)
       localStorage.setItem("loginsetName", name);
+      localStorage.setItem("email", email);
       localStorage.setItem("flipkartToken", token);
       localStorage.setItem("flipkartUserName", name);
       localStorage.setItem("flipkartUserId", id);

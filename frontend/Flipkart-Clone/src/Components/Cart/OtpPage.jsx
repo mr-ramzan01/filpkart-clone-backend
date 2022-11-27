@@ -3,6 +3,7 @@ import { Box, Button, Heading, HStack, PinInput, PinInputField, Text, useToast }
 import { useContext, useState } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Authcontext } from "../Context/Authcontext";
 import { CartContext } from "../Context/CartContext";
 
 function OtpPgae() {
@@ -10,26 +11,16 @@ function OtpPgae() {
 const [realOtp, setRealOtp] = useState('');
 const [state, setState] = useState(0);
 const [forwardCongo, setForwardCongo] = useState(false);
+const {value} = useContext(Authcontext);
 
 const { cartData, SetCartData, getData, setOrderpageData, orderpageData } = useContext(CartContext);
     
     const toast = useToast()
     
-    let value = Math.floor((Math.random()*10)+1000);
+
     
     useEffect(()=>{
       window.scrollTo(0, 0)
-      
-        setState(value);
-        toast({
-            position: 'top',
-            render: () => (
-              <Box color='white' p={3} bg='blue.500' mt="100px">
-                Your OTP is {value}
-              </Box>
-            ),
-          })
-          console.log(cartData, "lets see cart data")
     }, []);
 
     // const orderPageProducts = ()=>{
@@ -63,9 +54,6 @@ const { cartData, SetCartData, getData, setOrderpageData, orderpageData } = useC
     //   }
     // }
 
-    console.log(value, "default");
-    console.log(state);
-
 
 const handelgetOtp=(e)=>{
 
@@ -75,8 +63,8 @@ console.log(realOtp);
 
 
 const handelSubmitOtp= ()=>{
-    if(realOtp == state){
         setForwardCongo(true);
+    if(realOtp == state){
         // orderPageProducts()
         // alert("yes true did it");
     }else{

@@ -2,7 +2,6 @@
 import addressModel from "../Models/address.model.js"
 
 const postaddress = async (req, res)=> {
-
     const body = req.body;
     const { Name, Number, Email, Address, Pincode, City, State   } = body
     try {
@@ -22,6 +21,7 @@ const postaddress = async (req, res)=> {
 }
 const getaddress = async(req,res) => {
     try {
+        console.log("here", 56)
         const { id} = req.params; 
         const address = await addressModel.find({userId: id}); // get cart items
         return res.status(200).send(address); 
@@ -34,10 +34,10 @@ const getaddress = async(req,res) => {
     
 } 
 
-const updateAdress = async (req, res)=> {
+const deleteAdress = async (req, res)=> {
     try {
-        const updatedAdress = await addressModel.findByIdAndUpdate(req.params.id, req.body, {new: true});
-        res.send(updatedAdress);
+        const deletedAdress = await addressModel.findByIdAndDelete(req.params.id);
+        res.send(deletedAdress);
     } catch (error) {
         return res.status(500).send({
             status: 'error',
@@ -49,4 +49,4 @@ const updateAdress = async (req, res)=> {
 
 
 
-export  {postaddress,getaddress,updateAdress}
+export  {postaddress,getaddress,deleteAdress}

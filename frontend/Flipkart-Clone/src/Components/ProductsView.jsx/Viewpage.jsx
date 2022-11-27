@@ -114,7 +114,7 @@ function Viewpage() {
         )
     }
     const addDatainCart = () => { // viewData[0]
-        console.log(viewData[0], " check data ");
+        console.log(viewData[0], " check data 1");
         const token = localStorage.getItem("flipkartToken");
         fetch(`http://localhost:8080/cart`, {
             method: "POST",

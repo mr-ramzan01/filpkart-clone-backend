@@ -42,16 +42,19 @@ function CartPage() {
   const [lessQuantityState, setLessQuantityState] = useState(0);
   const [Deleteid, setDeleteId] = useState(0);
 
-  const [address, setAddress]  = useState([])
+  const [address, setAddress]  = useState([]);
 
   function getAddress(){
+    console.log("here");
     const id = localStorage.getItem("flipkartUserId");
-    fetch (`http:localhost:8080/address/${id}`)
+    fetch (`http://localhost:8080/address/${id}`)
     .then((res)=>res.json())
     .then((res)=>{
-      console.log(res, "add");
+      console.log(res, "add here");
       setAddress(res)
-    });
+    }).catch((err) => {
+      console.log(err, 'err');
+    })
   }
 
   
@@ -116,21 +119,17 @@ function CartPage() {
     setAddQuantityState(addQuantityState + 1);
   };
 
-      const handelDeleteAddress= ()=>{
-
-        const useradd = {
-          "Deleted": "ADD NEW ADDRESS"
-        }
-
-        fetch (`https://flipkart-data.onrender.com/address`,{
-          method: 'POST',
-          headers: {
-            'Content-Type' : 'application/json'
-          },
-          body: JSON.stringify(useradd)
-        })
-        setCount(count+1);
-      }
+    const handelDeleteAddress= (id)=>{
+      console.log(id, 'address id');
+      fetch (`http://localhost:8080/address/${id}`, {
+        method: 'DELETE'
+      })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+      })
+      setCount(count+1);
+    }
    
 
 
@@ -256,17 +255,21 @@ function CartPage() {
                 <PopoverCloseButton />
                 <PopoverBody color="black">
 
-                  <Text display={ address.Name !== undefined? 'none' : 'flex'  } justifyContent='center' >OOPS!! <br /> You Don't Have Any Saved Adress </Text>
+                  <Text display={ address.length!==0? 'none' : 'flex'  } justifyContent='center' >OOPS!! <br /> You Don't Have Any Saved Adress </Text>
 
-                  <Text display={ address.Name === undefined? 'none' : 'grid' } justifyContent='start'  >
+                  {
+                    address.map(addres => (
+                      <Text display={ addres.Name === undefined? 'none' : 'grid' } justifyContent='start'  >
                     <Box  textAlign='left' bg='white' >
-                     {address.Name} <br />     
-                     {/* {address.Number} <br/> */}
-                     {address.Address} , {address.City}
+                     {addres.Name} <br />     
+                     {/* {addres.Number} <br/> */}
+                     {addres.Address} , {addres.City}
                     </Box>
                     {/* <br/> */}
-                    <Button w='20%' h='30px' mt='1' mb='-5' bg='red' colorScheme='red'fontSize="10px" color='white' onClick={handelDeleteAddress} >Delete</Button>
+                    <Button w='20%' h='30px' mt='1' mb='-5' bg='red' colorScheme='red'fontSize="10px" color='white' onClick={() => handelDeleteAddress(addres._id)} >Delete</Button>
                      </Text>
+                    ))
+                  }
                   {/* OOPS!! <br />
                   You Don't Have Any Saved Adress */}
                 </PopoverBody>
@@ -292,7 +295,7 @@ function CartPage() {
             {cartData.map((data) => {
               return (
                 <Box
-                  key={data.id}
+                  key={data._id}
                   display="flex"
                   justifyContent="start"
                   w="800px"

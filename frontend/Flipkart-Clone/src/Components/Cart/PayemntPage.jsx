@@ -4,15 +4,17 @@ import { useContext, useRef, useState } from "react";
 import { CartContext } from "../Context/CartContext";
 import { MdSecurity } from "react-icons/md";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import emailjs from '@emailjs/browser';
 
 import StripeCheckout from 'react-stripe-checkout';
+import { Authcontext } from "../Context/Authcontext";
 
 const STRIPE_PUBLIC_KEY = 'pk_test_51H5Bo1Gtl9cehrsWAixqw0juVxGwMeYe0Rg5fhB9RhEwisXDJMmKo9AhAcgyT54dRLxAqgMWQPoql3FK0GWB5zLa00NMCJ90bx'
 const STRIPE_SECRET_KEY = 'sk_test_51H5Bo1Gtl9cehrsWsU6iJmdFcNPC4aC7g3J1k3VoFRW5wuwsxED60rI1rwVFmqmESEBiLdgOTABtHorrU333Fc3b001uuKPyNe'
 
 function PaymentPage() {
     const navigate = useNavigate();
-
+    const {setValue} = useContext(Authcontext);
 
     const { cartData } = useContext(CartContext);
 
@@ -63,6 +65,20 @@ function PaymentPage() {
         setOpenOtpBox(true);
         if (cardNumber) {
             // return <Navigate to='/otp'/>
+            let value = Math.floor((Math.random()*10)+1000);
+            setValue(value);
+            let name = localStorage.getItem("loginsetName");
+            let email = localStorage.getItem("email");
+
+            emailjs.send("service_ziuwxq2","template_92zwiga",{
+                  user_name: name,
+                  otp: value,
+                  reply_to: "ramzanformasai01@gmail.com",
+                },"I1ARv7okO2t6BnGBr").then((res) => {
+                  console.log("done");
+                }).catch(() => {
+                  console.log("not connected")
+                })
             console.log("xyz");
         } else {
             toast({
