@@ -19,6 +19,11 @@ app.use(cors());
 app.use(assignAuth)
 app.use(logger)
 
+app.get('/', (req,res)=>{
+  return res.status(200).json({
+    "message": "Thank you for visiting this website"
+  });
+})
 
 app.use('/auth', userRouter);
 app.use('/cart', cartRouter);
