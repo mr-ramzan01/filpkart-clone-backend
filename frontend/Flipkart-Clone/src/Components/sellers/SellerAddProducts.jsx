@@ -14,14 +14,34 @@ import {
 export default function SellerAddProducts() {
     const formik = useFormik({
         initialValues: {
-            category_name: "",
-            title: "",
             rememberMe: false
         },
         onSubmit: (values) => {
             delete values.email 
             delete values.password
-            alert(JSON.stringify(values, null, 2))
+            delete values.rememberMe
+            // alert(JSON.stringify(values, null, 2))
+            console.log(values);
+            let data = {
+                ...values,
+                description: values.title,
+                old_price: +values.old_price,
+                new_price: +values.new_price,
+                quantity: +values.quantity,
+                discount: +values.discount,
+                hidden_stars: +values.hidden_stars,
+                item_id: +values.item_id,
+            }
+            fetch(`http://localhost:8080/products/create`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            }).then((res)=>res.json())
+            .then((res)=>{
+                console.log(res, " in seller ");
+            })
         }
     });
     return (
@@ -129,6 +149,52 @@ export default function SellerAddProducts() {
                                 value={formik.values.quantity}
                             />
                         </FormControl>
+                        <FormControl>
+                            <FormLabel>Discount</FormLabel>
+                            <Input
+                                id="discount"
+                                name="discount"
+                                type="text"
+                                variant="filled"
+                                onChange={formik.handleChange}
+                                value={formik.values.discount}
+                            />
+                        </FormControl>
+                        <FormControl>
+                            <FormLabel>Hidden Stars</FormLabel>
+                            <Input
+                                id="hidden_stars"
+                                name="hidden_stars"
+                                type="text"
+                                variant="filled"
+                                onChange={formik.handleChange}
+                                value={formik.values.hidden_stars}
+                            />
+                        </FormControl>
+                        <FormControl>
+                            <FormLabel>Brand</FormLabel>
+                            <Input
+                                id="brand"
+                                name="brand"
+                                type="text"
+                                variant="filled"
+                                onChange={formik.handleChange}
+                                value={formik.values.brand}
+                            />
+                        </FormControl>
+                        {/* item_id */}
+                        <FormControl>
+                            <FormLabel>Item Id</FormLabel>
+                            <Input
+                                id="item_id"
+                                name="item_id"
+                                type="text"
+                                variant="filled"
+                                onChange={formik.handleChange}
+                                value={formik.values.item_id}
+                            />
+                        </FormControl>
+                        
                     </Grid> 
                         <Box width={'50%'} m='auto'>
                         <Checkbox

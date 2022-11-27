@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const productsSchema = new mongoose.Schema({
     category_id: {
         type: Number,
-        required: true
+        required: false
     },
     category_name: {
         type: String,
@@ -39,7 +39,7 @@ const productsSchema = new mongoose.Schema({
     },
     old_price: {
         type: Number,
-        required: true
+        required: false
     },
     discount: {
         type: Number,

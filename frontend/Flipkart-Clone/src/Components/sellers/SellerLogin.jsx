@@ -20,8 +20,8 @@ export default function SellerLogin() {
             rememberMe: false
         },
         onSubmit: (values) => {
-            if(values.email==='admin@gmail.com' && values.password==='bkabhi'){
-                navigate('/sellers/addProducs')
+            if(values.email==='admin@gmail.com' && (values.password==='bkabhi'||values.password==='admin')){
+                navigate('/products/sellers/addProducs')
             }else{
                 alert(JSON.stringify("Please Enter Admin Password"));
             }
