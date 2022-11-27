@@ -3,59 +3,72 @@ import  products  from '../Models/products.model.js';
 
 async function getProduct(req,res) {
     try {
-        // console.log(req.query)
-        // let {category} = req.query;
-        // let data;
-        // if(category) {
-        //     console.log("here")
-        //     data = await products.find({category_name: category})
-        // }
-        // else {
-        //     data = await products.find();
-
-        // }
-        // if(!data) {
-        //     return res.send(404).send({
-        //         status: 'Error',
-        //         message: "Not Found"
-        //     })
-        // }
-        // return res.send({
-        //     status: "Success",
-        //     data: data
-        // })
         console.log(req.query)
-        // let data = await products.find();
         const page = parseInt(req.query.page) - 1 || 0;
 		const limit = parseInt(req.query.limit) || 5;
 		const search = req.query.q || "";
         console.log(search);
 		let sort = req.query.sort || "rating";
-		let category = req.query.category || "All";
-        // let order = req.query.order || "asc";
-		const categoryOptions = [
-			"appliances",
-			"electronics",
-			"fashion",
-			"grocery",
-			"mobiles",
-			"home",
-			"top_offers"
-		];
+		let category = req.query.category_name || "All";
+        let range = req.query.range;
+        if(range){
+            var rangeArray = range.split(",")
+            var rangeBy = rangeArray[0];
+            console.log(rangeArray);
+            var gte_price = +rangeArray[1] ||"";
+            var lte_price = +rangeArray[2] || "";
+            console.log(gte_price, lte_price, rangeBy);
+        }
+		const categoryOptions = [ "appliances", "electronics", "fashion", "grocery", "mobiles", "home", "top_offers" ];
 
 		category === "All"
 			? (category = [...categoryOptions])
-			: (category = req.query.category.split(","));
+			: (category = req.query.category_name.split(","));
 		req.query.sort ? (sort = req.query.sort.split(",")) : (sort = [sort]);
 
 		let sortBy = {};
-		if (sort[1]) {
+		if(sort[1]){
 			sortBy[sort[0]] = sort[1];
-		} else {
+		}else{
 			sortBy[sort[0]] = "asc";
 		}
 
-		const product = await products.find({ description: { $regex: search, $options: "i" } })
+        var rangetestlte = lte_price? {new_price: { $lte: lte_price}}:{};
+        var rangetestgte = gte_price? {new_price: { $gte: gte_price}}:{};
+        // console.log(rangetest);
+
+        // discount_gte
+        var discount_gte = req.query.discount_gte;
+        // console.log(Array.isArray(discount_gte), discount_gte);
+        var smallDiscount = 100;
+        if(Array.isArray(discount_gte)){
+            discount_gte.forEach(element => {
+                smallDiscount = Math.min(+element, smallDiscount)
+            });
+        }else{
+            smallDiscount = +discount_gte;
+        }
+        var discountrange = discount_gte ? { discount: { $gte: smallDiscount}}:{};
+        // console.log(req.query.discount_gte, " req.query.discount_gte", smallDiscount);
+
+        
+        // hiddenStarts 
+        var hiddenStarts = req.query.hidden_stars_gte;
+        var smallhiddenStarts = 5;
+        if(Array.isArray(hiddenStarts)){
+            hiddenStarts.forEach(element => {
+                smallhiddenStarts = Math.min(+element, smallhiddenStarts)
+            });
+        }else{
+            smallhiddenStarts = +hiddenStarts;
+        }
+        var hiddenStartsrange = hiddenStarts ? { hidden_stars: { $gte: smallhiddenStarts}}:{};
+
+
+		let product = await products.find({$and: [
+            {description: { $regex: search, $options: "i" }},
+            {$and: [rangetestgte, rangetestlte, discountrange, hiddenStartsrange]}
+            ]})
 			.where("category_name")
 			.in([...category])
 			.sort(sortBy)
@@ -63,8 +76,9 @@ async function getProduct(req,res) {
 			.limit(limit);
 
 		const total = await products.countDocuments({
-			category: { $in: [...category] },
+			category_name: { $in: [...category] },
 			description: { $regex: search, $options: "i" },
+            $and: [rangetestgte, rangetestlte, discountrange, hiddenStartsrange]
 		});
 
 		const data = {

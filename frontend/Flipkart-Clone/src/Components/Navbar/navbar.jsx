@@ -60,7 +60,7 @@ import { CartContext } from "../Context/CartContext";
 
 const Navbar = () => {
   const {cartData} = useContext(CartContext);
-  // console.log(cartData, " cartData ");
+  console.log(cartData, " cartData ");
 
   const {correct, setCorrect} = useContext(Authcontext)
 
@@ -71,7 +71,7 @@ const Navbar = () => {
   const [hiddenDiv, setHiddenDiv] = useState(false)
 
   const [isLargerThan670] = useMediaQuery('(min-width: 730px)')
-  const url = `https://flipkart-data.onrender.com/all`
+  const url = `http://localhost:8080/products`
   // const url = `https://flipkart.dvishal485.workers.dev/search/`
 
   const [data, setData] = useState([])
@@ -85,7 +85,7 @@ const Navbar = () => {
     .then((res)=>res.json())
     .then((res)=>{
       // setData(res)
-      setData(res)
+      setData(res.product)
       console.log(res, " search input data after fetched ");
     })
   }
