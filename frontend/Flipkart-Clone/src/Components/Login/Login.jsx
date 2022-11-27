@@ -19,9 +19,12 @@ import {
   Input,
   FormLabel,
   useMediaQuery,
+  Center,
 } from "@chakra-ui/react";
 import { Authcontext } from "../Context/Authcontext";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import GoogleButton from 'react-google-button'
+
 import axios from "axios";
 import querystring from 'querystring'
 
@@ -39,7 +42,7 @@ export function Login() {
   const [isCheck, setIsCheck] = useState(false);
   const [incorrect, setIncorrect] = useState(0);
   // const [correct, setCorrect] = useState(0)
-  const { correct, setCorrect, name, setName } = useContext(Authcontext);
+  const { correct, setCorrect, name, setName, googleRequest } = useContext(Authcontext);
   // console.log(correct, " check correct in login ");
   // const [otpvalue, setOtpValue] = useState(false)
 
@@ -68,23 +71,7 @@ export function Login() {
     // console.log(inputValues)
   };
 
-  const googleRequest = async () => {
 
-    // https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=http://localhost:3000/google_OAuth&client_id=258927545029-6eh4839p1pmd7bcliakaoc2uq1stg1l1.apps.googleusercontent.com&access_type=offline&response_type=code&prompt=consent&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email
-    
-    const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
-    const redirect_uri= `http://localhost:3000/google_OAuth`
-    const client_id= '258927545029-6eh4839p1pmd7bcliakaoc2uq1stg1l1.apps.googleusercontent.com'
-    const access_type= 'offline'
-    const response_type= 'code'
-    const prompt= 'consent'
-    const scope= [
-      'https://www.googleapis.com/auth/userinfo.profile',
-      'https://www.googleapis.com/auth/userinfo.email',
-    ].join(' ')
-
-    window.location = `${rootUrl}?redirect_uri=${redirect_uri}&client_id=${client_id}&access_type=${access_type}&response_type=${response_type}&prompt=${prompt}&scope=${scope}`
-  };
 
   const handlelogin = (inputValues) => {
     fetch(`https://flipkart-data.onrender.com/Userdetails`)
@@ -432,7 +419,10 @@ export function Login() {
                     </Text>{' '}
                   </Link>
                 </FormControl>
-                <Button onClick={googleRequest}>Login With Google</Button>
+                
+                <Center>
+                  <GoogleButton onClick={googleRequest} label='Continue in with Google'/>
+                </Center>
               </Box>
             </div>
           </ModalBody>
