@@ -10,7 +10,7 @@ export default function GoogleOAuth() {
   const code = param.get("code");
   const getUsersData = async () => {
     const res = await axios.get(
-      `http://localhost:8080/auth/googleOAuth?code=${code}`
+      `https://flipkart-api-new.onrender.com/auth/googleOAuth?code=${code}`
     );
     console.log(res.data);
     const { status, token, name } = res.data;
