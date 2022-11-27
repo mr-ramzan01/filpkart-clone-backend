@@ -9,7 +9,10 @@ export const CartContext = createContext();
 
 
 const CartContextProvider = ( {children} )=>{
-    const carturl = `https://flipkart-data.onrender.com/products`
+    // const carturl = `https://flipkart-data.onrender.com/products`
+    const token = localStorage.getItem('flipkartToken');
+    const carturl = `http://localhost:8080/cart`
+
     
     const [cartData, SetCartData] = useState([]);
     const [ loading, setLoading ] = useState(false);
@@ -23,7 +26,7 @@ const CartContextProvider = ( {children} )=>{
     const [globalAddress, setGlobalAddress] = useState({})
     function getData() {
         setLoading(true);
-        fetch(carturl)
+        fetch(`${carturl}?token=${token}`)
           .then((res) => res.json())
           .then((res) => {
             console.log(res, " res ddd cart ");

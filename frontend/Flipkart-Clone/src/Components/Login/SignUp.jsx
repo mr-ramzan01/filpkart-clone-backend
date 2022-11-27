@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useState, useEffect } from 'react'
 import { Login } from './Login'
 import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { Alert, AlertIcon, AlertTitle, position } from '@chakra-ui/react'
+import { Alert, AlertIcon, AlertTitle, Center, position } from '@chakra-ui/react'
 import {
   Modal,
   ModalOverlay,
@@ -21,6 +21,8 @@ import {
   FormLabel,
   Link,
 } from '@chakra-ui/react'
+import GoogleButton from 'react-google-button'
+import { Authcontext } from '../Context/Authcontext'
 export function Signup() {
   const navigate = useNavigate()
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -32,6 +34,7 @@ export function Signup() {
   const [error, setError] = useState({})
   const [isAuth, setIsAuth] = useState(false)
   const [isSubmit, setIsSubmit] = useState(false)
+  const { correct, setCorrect, name, setName, googleRequest } = useContext(Authcontext);
 
   var flag = false
 
@@ -42,7 +45,7 @@ export function Signup() {
   }
 
   const handleSignup = (body) => {
-    fetch(`https://flipkart-data.onrender.com/Userdetails`)
+    fetch(`https://flipkart-api-new.onrender.com/Userdetails`)
       .then((res) => res.json())
       .then((res) => {
         res.map((el) => {
@@ -55,7 +58,7 @@ export function Signup() {
         if (flag == false) {
           console.log(inputValues + ' ')
           console.log(flag + 'raj')
-          fetch(`https://flipkart-data.onrender.com/Userdetails`, {
+          fetch(`https://flipkart-api-new.onrender.com/Userdetails`, {
             method: 'POST',
             body: JSON.stringify(body),
             headers: {
@@ -243,6 +246,9 @@ export function Signup() {
                     Existing User?{<Login />}
                   </Button>
                 </FormControl>
+                <Center mt='25px'>
+                  <GoogleButton onClick={googleRequest} label='Continue in with Google'/>
+                </Center>
               </Box>
             </div>
           </ModalBody>

@@ -115,10 +115,10 @@ function Viewpage() {
     }
     const addDatainCart = () => { // viewData[0]
         console.log(viewData[0], " check data ");
-
-        fetch(`https://flipkart-data.onrender.com/products`, {
+        const token = localStorage.getItem("flipkartToken");
+        fetch(`http://localhost:8080/cart`, {
             method: "POST",
-            body: JSON.stringify({ ...viewData[0] }),
+            body: JSON.stringify({ ...viewData[0],token }),
             headers: {
                 "Content-Type": "application/json",
             },

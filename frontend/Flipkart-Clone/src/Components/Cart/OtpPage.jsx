@@ -32,36 +32,36 @@ const { cartData, SetCartData, getData, setOrderpageData, orderpageData } = useC
           console.log(cartData, "lets see cart data")
     }, []);
 
-    const orderPageProducts = ()=>{
-      // for(var i=0; i<cartData.length;i++){
-      //   fetch(`https://flipkart-data.onrender.com/orderedProducts`, {
-      //     method: "POST",
-      //     body: JSON.stringify({...cartData[i]}),
-      //     headers: {
-      //       "Content-Type": "application/json"
-      //     }
-      //   })
-      //   .then((res)=>res.json())
-      //   .then((res)=>{
-      //     console.log(res,  " orderpage page products" );
-      //   })
-      // }
+    // const orderPageProducts = ()=>{
+    //   // for(var i=0; i<cartData.length;i++){
+    //   //   fetch(`https://flipkart-data.onrender.com/orderedProducts`, {
+    //   //     method: "POST",
+    //   //     body: JSON.stringify({...cartData[i]}),
+    //   //     headers: {
+    //   //       "Content-Type": "application/json"
+    //   //     }
+    //   //   })
+    //   //   .then((res)=>res.json())
+    //   //   .then((res)=>{
+    //   //     console.log(res,  " orderpage page products" );
+    //   //   })
+    //   // }
       
-      setOrderpageData([...orderpageData, ...cartData, ])
+    //   setOrderpageData([...orderpageData, ...cartData, ])
 
-      for(let i=0; i<cartData.length; i++){
-      fetch(`https://flipkart-data.onrender.com/products/${cartData[i].id}`,{
-          method:"DELETE"
-      })
-      .then(response =>{
-          return response.json( )
-      })
-      .then(data =>{
-        getData()
-          console.log(data, " test after delete data ")
-      })
-      }
-    }
+    //   for(let i=0; i<cartData.length; i++){
+    //   fetch(`https://flipkart-data.onrender.com/products/${cartData[i].id}`,{
+    //       method:"DELETE"
+    //   })
+    //   .then(response =>{
+    //       return response.json( )
+    //   })
+    //   .then(data =>{
+    //     getData()
+    //       console.log(data, " test after delete data ")
+    //   })
+    //   }
+    // }
 
     console.log(value, "default");
     console.log(state);
@@ -77,7 +77,7 @@ console.log(realOtp);
 const handelSubmitOtp= ()=>{
     if(realOtp == state){
         setForwardCongo(true);
-        orderPageProducts()
+        // orderPageProducts()
         // alert("yes true did it");
     }else{
         // alert("Wr");

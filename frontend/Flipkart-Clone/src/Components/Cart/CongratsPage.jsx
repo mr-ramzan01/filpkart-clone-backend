@@ -17,13 +17,47 @@ import { CartContext } from '../Context/CartContext';
 import Navbar from '../Navbar/navbar';
 
   const ConsratsPage = () => {
+    const { cartData, SetCartData, getData, setOrderpageData, orderpageData, globalAddress } = useContext(CartContext);
     var amount=localStorage.getItem("Total");
 
-    const { globalAddress } = useContext(CartContext);
+    // const { globalAddress } = useContext(CartContext);
     let tracking  = Math.ceil((Math.random()*117)+1578154424840);
     useEffect(()=>{
       window.scrollTo(0, 0)
+      orderPageProducts()
     },[])
+
+    const orderPageProducts = ()=>{
+      // for(var i=0; i<cartData.length;i++){
+      //   fetch(`https://flipkart-data.onrender.com/orderedProducts`, {
+      //     method: "POST",
+      //     body: JSON.stringify({...cartData[i]}),
+      //     headers: {
+      //       "Content-Type": "application/json"
+      //     }
+      //   })
+      //   .then((res)=>res.json())
+      //   .then((res)=>{
+      //     console.log(res,  " orderpage page products" );
+      //   })
+      // }
+      
+      setOrderpageData([...orderpageData, ...cartData, ])
+
+      for(let i=0; i<cartData.length; i++){
+      fetch(`https://flipkart-data.onrender.com/products/${cartData[i].id}`,{
+          method:"DELETE"
+      })
+      .then(response =>{
+          return response.json( )
+      })
+      .then(data =>{
+        getData()
+          console.log(data, " test after delete data ")
+      })
+      }
+    }
+
     return (
       <>
         <VStack

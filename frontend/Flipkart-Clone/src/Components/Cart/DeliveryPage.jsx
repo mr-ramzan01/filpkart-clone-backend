@@ -62,8 +62,8 @@ function DeliveryPage(){
         setAllFilled(true);
         if(address.Name != "" && address.Number != "" && address.Pincode != "" && address.Email != "" && address.Address != "" && address.City != "" && address.State != "" ){
             console.log("yes its working");
-
-            fetch(`https://flipkart-data.onrender.com/address`,{
+            const id = localStorage.getItem("flipkartUserId");
+            fetch(`http://localhost:8080/address/create/${id}`,{
                 method : 'POST',
                 body: JSON.stringify(address),
                 headers : {

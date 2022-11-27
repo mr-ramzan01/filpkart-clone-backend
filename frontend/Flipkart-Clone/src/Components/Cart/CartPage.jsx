@@ -45,8 +45,8 @@ function CartPage() {
   const [address, setAddress]  = useState([])
 
   function getAddress(){
-
-    fetch (`https://flipkart-data.onrender.com/address`)
+    const id = localStorage.getItem("flipkartUserId");
+    fetch (`http:localhost:8080/address/${id}`)
     .then((res)=>res.json())
     .then((res)=>{
       console.log(res, "add");
@@ -54,7 +54,6 @@ function CartPage() {
     });
   }
 
-  // console.log(address);
   
   // console.log( address.Name === undefined ? "working" : "it's wrong" );
   // console.log( address.Name );
@@ -90,28 +89,30 @@ function CartPage() {
     setDeleteId(id);
   };
 
-  const handelPatchLess = (id, quantity) => {
-    fetch(`${carturl}/${id}`, {
+  const handelPatchLess = ( data) => {
+    fetch(`${carturl}/${data._id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ...quantity, quantity: quantity - 1 }),
+      body: JSON.stringify({ ...data, quantity: data.quantity - 1 }),
     });
     // console.log(id);
     // setCount(count - 1);
     setLessQuantityState( lessQuantityState - 1 );
   };
 
-  const handelPatchAdd = (id, quantity) => {
-    fetch(`${carturl}/${id}`, {
+  const handelPatchAdd = (data) => {
+    console.log(carturl);
+    console.log(data, " test after delete data ");
+    fetch(`${carturl}/${data._id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ...quantity, quantity: quantity + 1 }),
+      body: JSON.stringify({ ...data, quantity: data.quantity + 1 }),
     });
-    // setCount(count + 1);
+    setCount(count + 1);
     setAddQuantityState(addQuantityState + 1);
   };
 
@@ -310,13 +311,13 @@ function CartPage() {
                     >
                       <Button
                         disabled={data.quantity === 1}
-                        onClick={() => handelPatchLess(data.id, data.quantity)}
+                        onClick={() => handelPatchLess( data)}
                       >
                         -
                       </Button>
                       <Button>{data.quantity}</Button>
                       <Button
-                        onClick={() => handelPatchAdd(data.id, data.quantity)}
+                        onClick={() => handelPatchAdd( data)}
                       >
                         +
                       </Button>
@@ -403,7 +404,8 @@ function CartPage() {
                       bg="none"
                       color
                       onClick={() => {
-                        handelID(data.id);
+                        // console.log(data._id);
+                        handelID(data._id);
                       }}
                     >
                       REMOVE

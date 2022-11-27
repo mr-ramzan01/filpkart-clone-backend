@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
-import { Signup } from "./SignUp";
-import { useState, useEffect } from "react";
-import { Link, Navigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useContext } from 'react'
+import { Signup } from './SignUp'
+import { useState, useEffect } from 'react'
+import { Link, Navigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import {
   Modal,
   ModalOverlay,
@@ -19,18 +19,21 @@ import {
   Input,
   FormLabel,
   useMediaQuery,
+  Center,
 } from "@chakra-ui/react";
 import { Authcontext } from "../Context/Authcontext";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import GoogleButton from 'react-google-button'
 
-
+import axios from "axios";
+import querystring from 'querystring'
 
 
 export function Login() {
-
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
+
   const initialvalues = { email: "", password: "" };
   const [inputValues, setInputValues] = useState(initialvalues);
   const [error, setError] = useState({});
@@ -39,15 +42,12 @@ export function Login() {
   const [isCheck, setIsCheck] = useState(false);
   const [incorrect, setIncorrect] = useState(0);
   // const [correct, setCorrect] = useState(0)
-  const { correct, setCorrect } = useContext(Authcontext);
-  console.log(correct, " check correct in login ");
+  const { correct, setCorrect, name, setName, googleRequest } = useContext(Authcontext);
+  // console.log(correct, " check correct in login ");
   // const [otpvalue, setOtpValue] = useState(false)
-  
-  
-  let loginsetName =
-    JSON.parse(localStorage.getItem("loginsetName")) || "Login";
-  const [name, setName] = useState(loginsetName);
-  localStorage.setItem("loginsetName", JSON.stringify(name));
+
+
+  localStorage.setItem("loginsetName", name);
 
   let otp;
   let raj = 0;
@@ -64,12 +64,14 @@ export function Login() {
   let checkOtp = (e) => {
     setIsAuth(e.target.value);
   };
-  console.log(isAuth);
+  // console.log(isAuth);
   const handleChange = (inp) => {
     const { name, value } = inp.target;
     setInputValues({ ...inputValues, [name]: value });
     // console.log(inputValues)
   };
+
+
 
   const handlelogin = (inputValues) => {
     fetch(`https://flipkart-data.onrender.com/Userdetails`)
@@ -140,11 +142,11 @@ export function Login() {
     });
   };
   const OTPVALUES = () => {
-    toast("WRONG OTP", {
-      position: "top-center",
-    });
-    setIsAuth("");
-  };
+    toast('WRONG OTP', {
+      position: 'top-center',
+    })
+    setIsAuth('')
+  }
   const Otp = () => {
     setIsCheck(true);
     generateOtp();
@@ -155,7 +157,7 @@ export function Login() {
     setIsCheck(false);
   };
 
-  let popotp = JSON.parse(localStorage.getItem("otp"));
+  let popotp = JSON.parse(localStorage.getItem('otp'))
 
   const sukantaotp = () => {
     if (isAuth === popotp) {
@@ -390,7 +392,7 @@ export function Login() {
                     </>
                   ) : (
                     <>
-                      {" "}
+                      {' '}
                       <Button
                         onClick={Pass}
                         boxShadow="md"
@@ -413,15 +415,19 @@ export function Login() {
                       textAlign="center"
                       color="#2f74f0"
                     >
-                      New to Flipkart? {<Signup onClose={onClose} />}{" "}
-                    </Text>{" "}
+                      New to Flipkart? {<Signup onClose={onClose} />}{' '}
+                    </Text>{' '}
                   </Link>
                 </FormControl>
+                
+                <Center>
+                  <GoogleButton onClick={googleRequest} label='Continue in with Google'/>
+                </Center>
               </Box>
             </div>
           </ModalBody>
         </ModalContent>
       </Modal>
     </>
-  );
+  )
 }

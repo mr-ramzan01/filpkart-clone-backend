@@ -9,10 +9,13 @@ import PaymentPage from './Cart/PayemntPage'
 import Summary from './Cart/Summary'
 import PrivateRoutes from './Context/PrivateRoutes'
 import Home from './Home/Home'
+import GoogleOAuth from './Login/GoogleOAuth'
 import { Login } from './Login/Login'
 import OrderPage from './OrderPage/OrderPage'
 import Products from './Products.jsx/Products'
 import Viewpage from './ProductsView.jsx/Viewpage'
+import SellerAddProducts from './sellers/SellerAddProducts'
+import SellerLogin from './sellers/SellerLogin'
 
 const AllRoutes = () => {
     return (
@@ -45,7 +48,11 @@ const AllRoutes = () => {
                         <OrderPage/>
                     </PrivateRoutes>
                 }/>
+                <Route path='/google_OAuth' element={<GoogleOAuth/>} />
                 <Route path='/login' element={<Login/>}></Route>
+
+                <Route path='/sellers' element={<SellerLogin/>}/>
+                <Route path='/products/sellers/addProducs' element={<SellerAddProducts/>} />
             </Routes>
         </>
     )

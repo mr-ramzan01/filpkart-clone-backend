@@ -1,0 +1,42 @@
+import { Center, Spinner } from "@chakra-ui/react";
+import axios from "axios";
+import React, { useContext } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Authcontext } from "../Context/Authcontext";
+
+export default function GoogleOAuth() {
+  const { correct, setCorrect, name, setName } = useContext(Authcontext);
+
+  const naivigate = useNavigate();
+  const param = new URLSearchParams(window.location.search);
+  const code = param.get("code");
+  const getUsersData = async () => {
+    const res = await axios.get(
+      `https://flipkart-api-new.onrender.com/auth/googleOAuth?code=${code}`
+    );
+    console.log(res.data);
+    const { status, token, name, id } = res.data;
+    if (status === "success") {
+      setCorrect(true);
+      setName(name)
+      localStorage.setItem("loginsetName", name);
+      localStorage.setItem("flipkartToken", token);
+      localStorage.setItem("flipkartUserName", name);
+      localStorage.setItem("flipkartUserId", id);
+      naivigate("/");
+    } else {
+      alert(res.data.message);
+    }
+  };
+
+  useEffect(() => {
+    getUsersData();
+  }, []);
+
+  return (
+    <div style={{height: "350px"}} >
+      <Center mt='300px'><Spinner size='xl' /></Center>
+    </div>
+  );
+}
