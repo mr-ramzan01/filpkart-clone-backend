@@ -3,12 +3,36 @@ export const Authcontext = createContext();
 
 const AuthContextProvider = ({ children }) => {
 
+  const googleRequest = async () => {
+
+    // https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=http://localhost:3000/google_OAuth&client_id=258927545029-6eh4839p1pmd7bcliakaoc2uq1stg1l1.apps.googleusercontent.com&access_type=offline&response_type=code&prompt=consent&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email
+    
+    const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
+    const redirect_uri= `http://localhost:3000/google_OAuth`
+    const client_id= '258927545029-6eh4839p1pmd7bcliakaoc2uq1stg1l1.apps.googleusercontent.com'
+    const access_type= 'offline'
+    const response_type= 'code'
+    const prompt= 'consent'
+    const scope= [
+      'https://www.googleapis.com/auth/userinfo.profile',
+      'https://www.googleapis.com/auth/userinfo.email',
+    ].join(' ')
+
+    window.location = `${rootUrl}?redirect_uri=${redirect_uri}&client_id=${client_id}&access_type=${access_type}&response_type=${response_type}&prompt=${prompt}&scope=${scope}`
+  };
+
+
+
   let loginCheck = JSON.parse(localStorage.getItem("loginCheck")) || false
-  // console.log("test 2 login local ", typeof loginCheck, loginCheck);
+  console.log("test 2 login local ", typeof loginCheck, loginCheck, localStorage.getItem("flipkartUserName"));
 
-    const [correct, setCorrect] = useState(loginCheck)
 
-    localStorage.setItem("loginCheck", JSON.stringify(correct));
+  let loginsetName = localStorage.getItem("loginsetName") || localStorage.getItem("flipkartUserName") || "Login"
+  const [name, setName] = useState(loginsetName);
+
+  const [correct, setCorrect] = useState(loginCheck)
+
+  localStorage.setItem("loginCheck", JSON.stringify(correct));
     // console.log(correct, " test corret ");
     // const [isAuth, setIsAuth] = useState(false);
   
@@ -27,7 +51,7 @@ const AuthContextProvider = ({ children }) => {
   
     console.log(correct," check correct in context  ");
     return (
-      <Authcontext.Provider value={{ correct, setCorrect }}>
+      <Authcontext.Provider value={{ correct, setCorrect, name, setName, googleRequest }}>
         {children}
       </Authcontext.Provider>
     );
