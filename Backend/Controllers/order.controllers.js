@@ -2,11 +2,11 @@ import jwt  from "jsonwebtoken";
 import orderItemModel from "../Models/orderItems.model.js"
 
 const getItems = async(req,res) => {
-    const token = localStorage.getItem('token'); // take token from localStorage
+    const token = localStorage.getItem('flipkartToken'); // take token from localStorage
     const decode = jwt.verify(token,process.env.JWT_SECRET_KEY); // verify token
-    const { userId} = decode; // get user
+    const { _id} = decode; // get user
     try {
-        const orderItems = await orderItemModel.find({userId: userId}); // get order items
+        const orderItems = await orderItemModel.find({userId: _id}); // get order items
         return res.status(200).send(orderItems);
     } catch (error) {
         return res.status(500).send({
@@ -18,10 +18,10 @@ const getItems = async(req,res) => {
 } 
 
 const addItem = async (req, res)=> {
-    const token = localStorage.getItem('token'); // take token from localStorage
+    const token = localStorage.getItem('flipkartToken'); // take token from localStorage
     const decode = jwt.verify(token,process.env.JWT_SECRET_KEY); // verify token
-    const { userId} = decode; // get user
-    const body = {...req.body,userId}; // get body
+    const { _id} = decode; // get user
+    const body = {...req.body,"userId":_id}; // get body
     try {
         const orderItem = await orderItemModel.create(body);
         return res.send({
@@ -38,6 +38,8 @@ const addItem = async (req, res)=> {
 
 const updateItem = async (req, res)=> {
     try {
+        const token = localStorage.getItem('flipkartToken'); // take token from localStorage
+        const decode = jwt.verify(token,process.env.JWT_SECRET_KEY); // verify token
         const updatedorderItem = await orderItemModel.findByIdAndUpdate(req.params.id, req.body, {new: true});
         res.send(updatedorderItem);
     } catch (error) {
@@ -50,6 +52,8 @@ const updateItem = async (req, res)=> {
 
 const deleteItem = async (req, res)=> {
     try {
+        const token = localStorage.getItem('flipkartToken'); // take token from localStorage
+        const decode = jwt.verify(token,process.env.JWT_SECRET_KEY); // verify token
         const deletedorderItem = await orderItemModel.findByIdAndDelete(req.params.id);
         res.send({
             "message": "Delete order item successfully"
