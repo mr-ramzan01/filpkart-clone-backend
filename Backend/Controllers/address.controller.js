@@ -1,6 +1,6 @@
 
 import addressModel from "../Models/address.model.js"
-import connection from "../config/db.js";
+import connection from "../Config/db.js";
 
 const postaddress = async (req, res)=> {
     await connection()
