@@ -39,13 +39,12 @@ export function Login() {
   const [isCheck, setIsCheck] = useState(false);
   const [incorrect, setIncorrect] = useState(0);
   // const [correct, setCorrect] = useState(0)
-  const { correct, setCorrect } = useContext(Authcontext);
+  const { correct, setCorrect, name, setName } = useContext(Authcontext);
   // console.log(correct, " check correct in login ");
   // const [otpvalue, setOtpValue] = useState(false)
-  let loginsetName =
-    JSON.parse(localStorage.getItem("loginsetName")) || "Login";
-  const [name, setName] = useState(loginsetName);
-  localStorage.setItem("loginsetName", JSON.stringify(name));
+
+
+  localStorage.setItem("loginsetName", name);
 
   let otp;
   let raj = 0;

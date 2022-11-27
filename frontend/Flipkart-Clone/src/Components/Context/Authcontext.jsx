@@ -4,11 +4,15 @@ export const Authcontext = createContext();
 const AuthContextProvider = ({ children }) => {
 
   let loginCheck = JSON.parse(localStorage.getItem("loginCheck")) || false
-  // console.log("test 2 login local ", typeof loginCheck, loginCheck);
+  console.log("test 2 login local ", typeof loginCheck, loginCheck, localStorage.getItem("flipkartUserName"));
 
-    const [correct, setCorrect] = useState(loginCheck)
 
-    localStorage.setItem("loginCheck", JSON.stringify(correct));
+  let loginsetName = localStorage.getItem("loginsetName") || localStorage.getItem("flipkartUserName") || "Login"
+  const [name, setName] = useState(loginsetName);
+
+  const [correct, setCorrect] = useState(loginCheck)
+
+  localStorage.setItem("loginCheck", JSON.stringify(correct));
     // console.log(correct, " test corret ");
     // const [isAuth, setIsAuth] = useState(false);
   
@@ -27,7 +31,7 @@ const AuthContextProvider = ({ children }) => {
   
     console.log(correct," check correct in context  ");
     return (
-      <Authcontext.Provider value={{ correct, setCorrect }}>
+      <Authcontext.Provider value={{ correct, setCorrect, name, setName }}>
         {children}
       </Authcontext.Provider>
     );

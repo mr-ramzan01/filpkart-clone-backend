@@ -1,10 +1,13 @@
 import { Center, Spinner } from "@chakra-ui/react";
 import axios from "axios";
-import React from "react";
+import React, { useContext } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Authcontext } from "../Context/Authcontext";
 
 export default function GoogleOAuth() {
+  const { correct, setCorrect, name, setName } = useContext(Authcontext);
+
   const naivigate = useNavigate();
   const param = new URLSearchParams(window.location.search);
   const code = param.get("code");
@@ -13,10 +16,14 @@ export default function GoogleOAuth() {
       `http://localhost:8080/auth/googleOAuth?code=${code}`
     );
     console.log(res.data);
-    const { status, token, name } = res.data;
+    const { status, token, name, id } = res.data;
     if (status === "success") {
+      setCorrect(true);
+      setName(name)
+      localStorage.setItem("loginsetName", name);
       localStorage.setItem("flipkartToken", token);
       localStorage.setItem("flipkartUserName", name);
+      localStorage.setItem("flipkartUserId", id);
       naivigate("/");
     } else {
       alert(res.data.message);
