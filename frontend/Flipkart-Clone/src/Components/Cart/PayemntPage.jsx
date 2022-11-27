@@ -3,13 +3,15 @@ import { AddIcon, CheckIcon, InfoIcon, InfoOutlineIcon, UnlockIcon } from '@chak
 import { useContext, useRef, useState } from "react";
 import { CartContext } from "../Context/CartContext";
 import { MdSecurity } from "react-icons/md";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
+import StripeCheckout from 'react-stripe-checkout';
 
-
+const STRIPE_PUBLIC_KEY = 'pk_test_51H5Bo1Gtl9cehrsWAixqw0juVxGwMeYe0Rg5fhB9RhEwisXDJMmKo9AhAcgyT54dRLxAqgMWQPoql3FK0GWB5zLa00NMCJ90bx'
+const STRIPE_SECRET_KEY = 'sk_test_51H5Bo1Gtl9cehrsWsU6iJmdFcNPC4aC7g3J1k3VoFRW5wuwsxED60rI1rwVFmqmESEBiLdgOTABtHorrU333Fc3b001uuKPyNe'
 
 function PaymentPage() {
-
+    const navigate = useNavigate();
 
 
     const { cartData } = useContext(CartContext);
@@ -80,6 +82,13 @@ function PaymentPage() {
 
     if (cartData.length === 0) {
         return <Navigate to='/cart' />
+    }
+
+    const tokenHandler = (token)=>{
+        console.log(token, " token stripe");
+        if(token){
+            navigate('/congo')
+        }
     }
 
     return (
@@ -215,7 +224,6 @@ function PaymentPage() {
                     </Box>
                     {/* UPI BOX */}
                     <Box bg='white' w='100%' display='block' borderBottom='1px solid #f2f2f2'  >
-
                         <Box display='flex' p='5' alignItems='center' >
                             <Radio value='0' ></Radio>
                             <Image src='https://static-assets-web.flixcart.com/fk-p-linchpin-web/batman-returns/logos/UPI.gif' w='30px' h='30px' ml='5' />
@@ -234,11 +242,27 @@ function PaymentPage() {
 
                         <Box display='flex' p='5' alignItems='center' >
                             <Radio value='0' ></Radio>
-                            <Image src='https://static-assets-web.flixcart.com/fk-p-linchpin-web/batman-returns/logos/UPI.gif' w='30px' h='30px' ml='5' />
+                            <Image src='https://woocommerce.com/wp-content/uploads/2011/12/stripe-logo-blue.png' w='40px' h='' ml='5' />
                             <Box display='grid' justifyContent='start' textAlign='start' alignItems='start' >
-                                <Text ml='6' >Wallets</Text>
-                                <Text ml='6' color='green' >Offers avaliable on Paytm</Text>
-
+                                <Text ml='6' >Pay With Stripe</Text>
+                                <Text ml='6' color='green' >Offers avaliable on Stripe</Text>
+                                
+                            </Box>
+                            <Box>
+                                {/* <Button ml='16' color='white' mt='4' w='' onClick={handelStripe} bg='#fb641b' borderRadius='0' >
+                                    <Link 
+                                    to={cardNumber ? '/otp' : ''} 
+                                    >
+                                        PAY ₹{totalAmount}
+                                    </Link>
+                                </Button> */}
+                                <StripeCheckout
+                                        token={tokenHandler}
+                                        amount={totalAmount*100}
+                                        shippingAddress
+                                        stripeKey={STRIPE_PUBLIC_KEY}
+                                        currency='INR'
+                                    />
                             </Box>
                         </Box>
 
@@ -279,7 +303,7 @@ function PaymentPage() {
                             <Button ml='16' color='white' mt='4' w='40%' onClick={handelForwardOtp} bg='#fb641b' borderRadius='0' >
                                 <Link 
                                 to={cardNumber ? '/otp' : ''} 
-                                  >
+                                >
                                     PAY ₹{totalAmount}
                                 </Link>
                             </Button>
