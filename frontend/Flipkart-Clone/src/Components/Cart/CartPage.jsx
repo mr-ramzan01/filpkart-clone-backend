@@ -42,19 +42,22 @@ function CartPage() {
   const [lessQuantityState, setLessQuantityState] = useState(0);
   const [Deleteid, setDeleteId] = useState(0);
 
-  const [address, setAddress]  = useState({})
+  const [address, setAddress]  = useState([])
 
   function getAddress(){
 
     fetch (`https://flipkart-data.onrender.com/address`)
     .then((res)=>res.json())
-    .then((res)=>setAddress(res));
+    .then((res)=>{
+      console.log(res, "add");
+      setAddress(res)
+    });
   }
 
-  console.log(address);
+  // console.log(address);
   
-  console.log( address.Name === undefined ? "working" : "it's wrong" );
-  console.log( address.Name );
+  // console.log( address.Name === undefined ? "working" : "it's wrong" );
+  // console.log( address.Name );
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
 
@@ -71,7 +74,7 @@ function CartPage() {
     getAddress();
   }, [count , addQuantityState , lessQuantityState ]);
 
-  console.log(cartData);
+  // console.log(cartData);
 
   const handelDeleteCart = () => {
     onClose();
@@ -83,7 +86,7 @@ function CartPage() {
   
   const handelID = (id) => {
     onOpen();
-    console.log(id);
+    // console.log(id);
     setDeleteId(id);
   };
 
@@ -95,7 +98,7 @@ function CartPage() {
       },
       body: JSON.stringify({ ...quantity, quantity: quantity - 1 }),
     });
-    console.log(id);
+    // console.log(id);
     // setCount(count - 1);
     setLessQuantityState( lessQuantityState - 1 );
   };
@@ -136,8 +139,8 @@ function CartPage() {
     totalAmount+= data.new_price* data.quantity;  
   })
   discount = Math.floor(((discount/cartData.length)* sellingPrice)/100); 
-  console.log(sellingPrice);
-  console.log(discount);
+  // console.log(sellingPrice);
+  // console.log(discount);
 
 
 
