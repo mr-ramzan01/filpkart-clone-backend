@@ -11,28 +11,29 @@ import { getProductError, getProductLoading, getProductsSuccess } from '../../Re
 import { useParams } from 'react-router'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
-const url = `https://flipkart-data.onrender.com`
+// const url = `https://flipkart-data.onrender.com`
 // https://flipkart-data.onrender.com
+const url = `http://localhost:8080` 
 
 const Products = () => {
     const [isLargerThan720] = useMediaQuery('(min-width: 720px)')
-    // const [data, setData] = useState([]);
     const [page, setPage] = useState(1);
     const perPagelimitProduct = 16;
     const [total, setTotal] = useState(0);
 
     const { category_name } = useParams()
-    console.log(category_name, " category_name");
+    // console.log(category_name, " category_name");
 
     const dispatch = useDispatch();
     const { loading, error, products } = useSelector((state) => state)
 
-    console.log(products, " products ", loading, error);
+    // console.log(products, " products ", loading, error);
 
     const [priceRange, setPriceRange] = useState([]);
     // console.log(priceRange, " priceRange ");
-    const priceRangeurl = priceRange[0] > 0 || priceRange[1] < 100 ?
-        `&new_price_gte=${priceRange[0] * 10}${priceRange[1] < 100 ? `&new_price_lte=${priceRange[1] * 10}` : ""}` : ""
+    const priceRangeurl = 
+        priceRange[0] > 0 || priceRange[1] < 100 ?
+        `&range=new_price,${priceRange[0] * 10},${priceRange[1] < 100 ? `${priceRange[1] * 10}` : ""}` : "";
 
     // for mobile sort price
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -41,8 +42,8 @@ const Products = () => {
     const [sortprice, setPriceSort] = useState("");
     // console.log(sortprice);
     let pricesorturl = isLargerThan720 ?
-        sortprice === "" ? "" : `&_sort=new_price&_order=${sortprice}` :
-        placement === "" ? "" : `&_sort=new_price&_order=${placement}`
+        sortprice === "" ? "" : `&sort=new_price,${sortprice}` :
+        placement === "" ? "" : `&sort=new_price,${placement}`
 
     const { value, getCheckboxProps } = useCheckboxGroup()
 
@@ -60,9 +61,13 @@ const Products = () => {
         let tempUrl = ""
         const categoryCheckArrurl = ['fashion', 'mobiles', "top_offers", "grocery", "electronics", "home", "appliances"]
         const discountCheckArrurl = ["30", "40", "50", "60", "70"]
+        let categoryCheck ="";
+        let categoryFlag = false;
         value.forEach((el) => {
             if (categoryCheckArrurl.includes(el)) {
-                tempUrl += `&category_name=${el}`
+                categoryCheck+=`${el},`
+                categoryFlag = true;
+                // tempUrl = `&category_name=${categoryCheck}`
             }
             if (el === "3" || el === "4") {
                 tempUrl += `&hidden_stars_gte=${el}`
@@ -71,22 +76,28 @@ const Products = () => {
                 tempUrl += `&discount_gte=${el}`
             }
         })
+        if(categoryFlag){
+            tempUrl += `&category_name=${categoryCheck}`
+        }
 
-        // console.log(tempUrl);
+        console.log(tempUrl);
         let homepagecategory_nameurl = ""
         if (categoryCheckArrurl.includes(category_name)) {
             homepagecategory_nameurl = `category_name=${category_name}`
         }
 
-        fetch(`${url}/all?${homepagecategory_nameurl}&_limit=${perPagelimitProduct}&_page=${page}${pricesorturl}${priceRangeurl}${tempUrl}`)
+        fetch(`${url}/products?${homepagecategory_nameurl}&limit=${perPagelimitProduct}&page=${page}${pricesorturl}${priceRangeurl}${tempUrl}`)
             .then((res) => {
-                const total = res.headers.get('X-Total-Count')
-                setTotal(total);
+                // const total = res.headers.get('X-Total-Count')
+                // setTotal(total);
                 return res.json()
             })
             .then((res) => {
                 // setData(res)
-                dispatch(getProductsSuccess(res))
+
+                setTotal(res.total);
+                // console.log(res.product);
+                dispatch(getProductsSuccess(res.product))
             })
             .catch(() => dispatch(getProductError()))
     }
@@ -115,7 +126,7 @@ const Products = () => {
 
     const getScrollProducts = async () => {
         try {
-            const res = await fetch(`${url}/all?_limit=8&_page=${page}`);
+            const res = await fetch(`${url}/products?limit=8&page=${page}`);
             const data = await res.json();
             dispatch(getProductsSuccess(data))
         } catch (error) {

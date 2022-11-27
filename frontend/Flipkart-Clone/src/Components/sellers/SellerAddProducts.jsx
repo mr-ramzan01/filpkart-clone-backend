@@ -11,7 +11,7 @@ import {
     VStack
 } from "@chakra-ui/react";
 
-export default function SellerPage() {
+export default function SellerAddProducts() {
     const formik = useFormik({
         initialValues: {
             category_name: "",

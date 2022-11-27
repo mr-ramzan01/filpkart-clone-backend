@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { Navigate, useNavigate } from "react-router-dom";
 
-export default function Sellers() {
+export default function SellerLogin() {
     const navigate = useNavigate();
     const formik = useFormik({
         initialValues: {
