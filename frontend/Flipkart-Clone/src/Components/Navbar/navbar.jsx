@@ -59,9 +59,7 @@ import { CartContext } from "../Context/CartContext";
 
 
 const Navbar = () => {
-  const {cartData} = useContext(CartContext);
-  console.log(cartData, " cartData ");
-
+  const {cartData, SetCartData} = useContext(CartContext);
   const {correct, setCorrect} = useContext(Authcontext)
 
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -126,7 +124,13 @@ const Navbar = () => {
   }
 
   const handleLogout = ()=>{
+    // setCartData
     setCorrect(false)
+    SetCartData([]);
+    localStorage.removeItem("flipkartToken");
+    localStorage.removeItem("flipkartUserId");
+    localStorage.removeItem("flipkartUserName");
+    localStorage.removeItem("loginsetName");
     console.log(" handleLogout ", correct);
   }
   // console.log(" handleLogout ", correct);

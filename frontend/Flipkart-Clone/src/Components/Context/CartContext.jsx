@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { createContext, useEffect, useState } from "react";
 import { json } from "react-router-dom";
 
@@ -12,7 +13,6 @@ const CartContextProvider = ( {children} )=>{
     // const carturl = `https://flipkart-data.onrender.com/products`
     const token = localStorage.getItem('flipkartToken');
     const carturl = `http://localhost:8080/cart`
-
     
     const [cartData, SetCartData] = useState([]);
     const [ loading, setLoading ] = useState(false);
@@ -29,7 +29,7 @@ const CartContextProvider = ( {children} )=>{
         fetch(`${carturl}?token=${token}`)
           .then((res) => res.json())
           .then((res) => {
-            console.log(res, " res ddd cart ");
+            console.log(res, 'resylt');
             SetCartData(res)
           })
           .catch((err) => console.log(err))
@@ -44,7 +44,7 @@ const CartContextProvider = ( {children} )=>{
 return <CartContext.Provider value={{ 
         cartData, SetCartData,loading,
         setOrderpageData, orderpageData,
-        setLoading,getData, globalAddress, setGlobalAddress, carturl
+        setLoading, getData, globalAddress, setGlobalAddress, carturl
     }} >
     {children}
 </CartContext.Provider>

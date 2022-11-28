@@ -1,5 +1,6 @@
 import jwt  from "jsonwebtoken";
 import cartItemModel from "../Models/cartItem.model.js"
+import orderItemModel from "../Models/orderItems.model.js";
 
 const getItems = async(req,res) => {
     try {
@@ -65,4 +66,23 @@ const deleteItem = async (req, res)=> {
     }
 }
 
-export {getItems,deleteItem,updateItem,addItem}
+
+const deleteAllCart = async(req, res) => {
+    try {
+        const data = await cartItemModel.find({userId: req.params.id});
+        // console.log(data, 'data');
+        await orderItemModel.insertMany(data);
+        await cartItemModel.deleteMany({userId: req.params.id});
+        res.send({
+            "message": "Delete cart items successfully",
+            data: data
+        });
+    } catch (error) {
+        return res.status(500).send({
+            status: 'error',
+            error: 'Server Error'
+        })
+    }
+}
+
+export {getItems,deleteItem,updateItem,addItem, deleteAllCart}

@@ -11,7 +11,7 @@ import {
     Grid,
     GridItem,
   } from '@chakra-ui/react'
-  import React, { useContext, useEffect } from 'react'
+  import React, { useContext, useEffect, useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import { CartContext } from '../Context/CartContext';
 import Navbar from '../Navbar/navbar';
@@ -22,12 +22,27 @@ import Navbar from '../Navbar/navbar';
 
     // const { globalAddress } = useContext(CartContext);
     let tracking  = Math.ceil((Math.random()*117)+1578154424840);
+    console.log(getData);
     useEffect(()=>{
+      deleteCart();
       window.scrollTo(0, 0)
-      orderPageProducts()
+      // orderPageProducts()
     },[])
 
-    const orderPageProducts = ()=>{
+
+    const deleteCart = () => {
+      const userId = localStorage.getItem('flipkartUserId');
+      fetch(`http://localhost:8080/cart/deleteall/${userId}`, {
+        method: 'DELETE'
+      }).then((res) => res.json())
+      .then((res) => {
+        getData();
+        console.log(res, "order Data");
+      })
+
+    }
+
+    // const orderPageProducts = ()=>{
       // for(var i=0; i<cartData.length;i++){
       //   fetch(`https://flipkart-data.onrender.com/orderedProducts`, {
       //     method: "POST",
@@ -42,21 +57,21 @@ import Navbar from '../Navbar/navbar';
       //   })
       // }
       
-      setOrderpageData([...orderpageData, ...cartData, ])
+    //   setOrderpageData([...orderpageData, ...cartData, ])
 
-      for(let i=0; i<cartData.length; i++){
-      fetch(`https://flipkart-data.onrender.com/products/${cartData[i].id}`,{
-          method:"DELETE"
-      })
-      .then(response =>{
-          return response.json( )
-      })
-      .then(data =>{
-        getData()
-          console.log(data, " test after delete data ")
-      })
-      }
-    }
+    //   for(let i=0; i<cartData.length; i++){
+    //   fetch(`https://flipkart-data.onrender.com/products/${cartData[i].id}`,{
+    //       method:"DELETE"
+    //   })
+    //   .then(response =>{
+    //       return response.json( )
+    //   })
+    //   .then(data =>{
+    //     getData()
+    //       console.log(data, " test after delete data ")
+    //   })
+    //   }
+    // }
 
     return (
       <>

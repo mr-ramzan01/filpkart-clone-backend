@@ -93,7 +93,7 @@ function CartPage() {
   };
 
   const handelPatchLess = ( data) => {
-    fetch(`${carturl}/${data._id}`, {
+    fetch(`${carturl}/${data._id}`, { 
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

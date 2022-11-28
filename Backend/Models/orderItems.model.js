@@ -8,19 +8,19 @@ const orderItemSchema = new mongoose.Schema(
     },
     category_id: {
       type: Number,
-      required: true
+      required: false
     },
     category_name: {
       type: String,
-      required: true
+      required: false
     },
     image: {
       type: String,
-      required: true
+      required: false
     },
     description: {
       type: String,
-      required: true
+      required: false
     },
     stars: {
       type: Number,
@@ -40,19 +40,19 @@ const orderItemSchema = new mongoose.Schema(
     },
     new_price: {
       type: Number,
-      required: true
+      required: false
     },
     old_price: {
       type: Number,
-      required: true
+      required: false
     },
     discount: {
       type: Number,
-      required: true
+      required: false
     },
     delivery_type: {
       type: String,
-      required: true
+      required: false
     },
     offer: {
       type: String,
@@ -64,11 +64,11 @@ const orderItemSchema = new mongoose.Schema(
     },
     hidden_stars: {
       type: Number,
-      required: true
+      required: false
     },
     item_id: {
       type: Number,
-      required: true
+      required: false
     },
     quantity: {
       type: Number,
