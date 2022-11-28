@@ -10,27 +10,37 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getProductError, getProductLoading, getProductsSuccess } from '../../Redux/Products/action'
 import { useParams } from 'react-router'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import {useSearchParams} from 'react-router-dom'
+import { Example } from './Filter/CustomCheckbox'
 
 // const url = `https://flipkart-data.onrender.com`
 // https://flipkart-data.onrender.com
-const url = `http://localhost:8080` 
+const url = `https://flipkart-api-new.onrender.com` 
 
 const Products = () => {
+
+    const [searchParams, setSearchParams] = useSearchParams()
+    
+    // const [urlParam, setUrlParam] = useState(searchParams.get("page"));
+    // const testcat = {...searchParams}
+    // console.log("check parems page > ", searchParams.get("page"), " check parems category_name > ", searchParams.getAll("category_name"), " searchParams ");
+
     const [isLargerThan720] = useMediaQuery('(min-width: 720px)')
-    const [page, setPage] = useState(1);
+
+    const [page, setPage] = useState(searchParams.get("page") || 1);
+    const [category, setCategory] = useState(searchParams.getAll("category_name"));
+    const [discount, setDiscount] = useState(searchParams.getAll("discount_gte") || []); //hidden_stars_gte
+    const [hiddenStart, sethiddenStart] = useState(searchParams.getAll("hidden_stars_gte") || []); 
+
     const perPagelimitProduct = 16;
     const [total, setTotal] = useState(0);
 
-    const { category_name } = useParams()
-    // console.log(category_name, " category_name");
+    const {category_name} = useParams()
 
     const dispatch = useDispatch();
     const { loading, error, products } = useSelector((state) => state)
 
-    // console.log(products, " products ", loading, error);
-
     const [priceRange, setPriceRange] = useState([]);
-    // console.log(priceRange, " priceRange ");
     const priceRangeurl = 
         priceRange[0] > 0 || priceRange[1] < 100 ?
         `&range=new_price,${priceRange[0] * 10},${priceRange[1] < 100 ? `${priceRange[1] * 10}` : ""}` : "";
@@ -40,44 +50,56 @@ const Products = () => {
     const [placement, setPlacement] = React.useState("")
 
     const [sortprice, setPriceSort] = useState("");
-    // console.log(sortprice);
+    
     let pricesorturl = isLargerThan720 ?
         sortprice === "" ? "" : `&sort=new_price,${sortprice}` :
         placement === "" ? "" : `&sort=new_price,${placement}`
 
-    const { value, getCheckboxProps } = useCheckboxGroup()
+    const [defaultVal, setdefaultVal] = useState([])
+    let { value, getCheckboxProps } = useCheckboxGroup(
+        {defaultValue: [...category, ...discount]}
+        )
 
-    // console.log(value, " val of checkbox ");
-    // console.log(data, " all data");
+    let valuesArrays = [...value, ...category, ...discount, ...hiddenStart]
+    let values = [...new Set(valuesArrays)];
 
     useEffect(() => {
         window.scrollTo(0, 0)
         fetchData()
         // eslint-disable-next-line
-    }, [page, sortprice, priceRangeurl, value, placement])
+    }, [page, sortprice, priceRangeurl, value, placement, ])
 
     const fetchData = () => {
         dispatch(getProductLoading())
+
         let tempUrl = ""
         const categoryCheckArrurl = ['fashion', 'mobiles', "top_offers", "grocery", "electronics", "home", "appliances"]
         const discountCheckArrurl = ["30", "40", "50", "60", "70"]
         let categoryCheck ="";
         let categoryFlag = false;
-        value.forEach((el) => {
+        let categ = [];
+        let disc = [];
+        let hiddenStr = []
+        values.forEach((el) => {
             if (categoryCheckArrurl.includes(el)) {
                 categoryCheck+=`${el},`
                 categoryFlag = true;
+                categ.push(el)
                 // tempUrl = `&category_name=${categoryCheck}`
             }
             if (el === "3" || el === "4") {
                 tempUrl += `&hidden_stars_gte=${el}`
+                hiddenStr.push(el)
             }
             if (discountCheckArrurl.includes(el)) {
                 tempUrl += `&discount_gte=${el}`
+                disc.push(el)
             }
         })
+
         if(categoryFlag){
             tempUrl += `&category_name=${categoryCheck}`
+            // setCategory(categ)
         }
 
         console.log(tempUrl);
@@ -94,8 +116,9 @@ const Products = () => {
             })
             .then((res) => {
                 // setData(res)
-
                 setTotal(res.total);
+                // console.log("category ", category);
+                setSearchParams({page, ...searchParams, "category_name": [...categ], "discount_gte": [...disc], "hidden_stars_gte":[...hiddenStr]})
                 // console.log(res.product);
                 dispatch(getProductsSuccess(res.product))
             })
@@ -400,6 +423,7 @@ const Products = () => {
                     </Box>
                 </Box>
             </Flex>
+            {/* <Example/> */}
         </Box>
     )
 }

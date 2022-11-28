@@ -65,9 +65,12 @@ function Appliances() {
       };
     const getFashion = () => {
         setLoading(true)
-        fetch("https://flipkart-data.onrender.com/all")
+        fetch("https://flipkart-api-new.onrender.com/products?limit=500")
             .then(res => res.json())
-            .then(res => setAppliances(res))
+            .then(res => {
+                setAppliances(res.product)
+                // console.log(res);
+            })
             .catch(err => setError(true))
             .finally(() => setLoading(false))
     }

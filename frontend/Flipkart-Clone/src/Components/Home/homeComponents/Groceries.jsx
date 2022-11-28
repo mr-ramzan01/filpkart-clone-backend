@@ -65,9 +65,9 @@ function Groceries() {
       };
     const getFashion = () => {
         setLoading(true)
-        fetch("https://flipkart-data.onrender.com/all")
+        fetch("https://flipkart-api-new.onrender.com/products?limit=500")
             .then(res => res.json())
-            .then(res => setGroceries(res))
+            .then(res => setGroceries(res.product))
             .catch(err => setError(true))
             .finally(() => setLoading(false))
     }

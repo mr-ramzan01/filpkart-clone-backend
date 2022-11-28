@@ -64,11 +64,14 @@ function Fashion() {
             }
         ]
     };
+    // https://flipkart-api-new.onrender.com/products
     const getFashion = () => {
         setLoading(true)
-        fetch("https://flipkart-data.onrender.com/all")
+        fetch("https://flipkart-api-new.onrender.com/products?limit=500")
             .then(res => res.json())
-            .then(res => setFashion(res))
+            .then(res => {
+                setFashion(res.product)
+            })
             .catch(err => setError(true))
             .finally(() => setLoading(false))
     }
