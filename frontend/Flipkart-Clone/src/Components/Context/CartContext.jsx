@@ -13,7 +13,6 @@ const CartContextProvider = ( {children} )=>{
     
     const [cartData, SetCartData] = useState([]);
     const [ loading, setLoading ] = useState(false);
-
     let prevData = JSON.parse(localStorage.getItem("orderpageData")) ||[]
 
     const [orderpageData, setOrderpageData] = useState([...prevData]);
