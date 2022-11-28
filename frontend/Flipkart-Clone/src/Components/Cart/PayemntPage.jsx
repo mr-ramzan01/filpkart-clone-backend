@@ -67,19 +67,37 @@ function PaymentPage() {
             // return <Navigate to='/otp'/>
             let value = Math.floor((Math.random()*10)+1000);
             setValue(value);
-            let name = localStorage.getItem("loginsetName");
-            let email = localStorage.getItem("email");
-
-            emailjs.send("service_ziuwxq2","template_92zwiga",{
-                  user_name: name,
-                  otp: value,
-                  reply_to: "ramzanformasai01@gmail.com",
-                },"I1ARv7okO2t6BnGBr").then((res) => {
-                  console.log("done");
-                }).catch(() => {
-                  console.log("not connected")
+            let token = localStorage.getItem("flipkartToken");
+            const obj = {
+                headers: {
+                    Authorization: "Bearer "+token 
+                }
+            }
+            fetch(`http://localhost:8080/auth/getLoggedInUser`,obj)
+            .then((res) => res.json())
+            .then((res) => {
+                console.log(res, 'details');
+                emailjs.send("service_ziuwxq2","template_92zwiga",{
+                    user_name: res.data.name,
+                    otp: value,
+                    reply_to: res.data.email,
+                    },"I1ARv7okO2t6BnGBr").then((res) => {
+                        console.log("done");
+                    }).catch(() => {
+                        console.log("not connected")
                 })
-            console.log("xyz");
+            })
+            
+            // emailjs.send("service_ziuwxq2","template_92zwiga",{
+            //     user_name: name,
+            //     otp: value,
+            //     reply_to: "ramzanformasai01@gmail.com",
+            //     },"I1ARv7okO2t6BnGBr").then((res) => {
+            //         console.log("done");
+            //     }).catch(() => {
+            //         console.log("not connected")
+            // })
+            // console.log("xyz");
         } else {
             toast({
                 position: 'top',

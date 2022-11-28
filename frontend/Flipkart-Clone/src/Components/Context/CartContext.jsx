@@ -17,12 +17,6 @@ const CartContextProvider = ( {children} )=>{
     const [cartData, SetCartData] = useState([]);
     const [ loading, setLoading ] = useState(false);
 
-    let prevData = JSON.parse(localStorage.getItem("orderpageData")) ||[]
-
-    const [orderpageData, setOrderpageData] = useState([...prevData]);
-
-    localStorage.setItem("orderpageData", JSON.stringify(orderpageData));
-
     const [globalAddress, setGlobalAddress] = useState({})
     function getData() {
         setLoading(true);
@@ -43,7 +37,6 @@ const CartContextProvider = ( {children} )=>{
 
 return <CartContext.Provider value={{ 
         cartData, SetCartData,loading,
-        setOrderpageData, orderpageData,
         setLoading, getData, globalAddress, setGlobalAddress, carturl
     }} >
     {children}

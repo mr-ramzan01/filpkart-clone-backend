@@ -27,6 +27,7 @@ import GoogleButton from 'react-google-button'
 
 import axios from "axios";
 import querystring from 'querystring'
+import { CartContext } from '../Context/CartContext'
 
 
 export function Login() {
@@ -41,6 +42,7 @@ export function Login() {
   const [isAuth, setIsAuth] = useState();
   const [isCheck, setIsCheck] = useState(false);
   const [incorrect, setIncorrect] = useState(0);
+  const {getData} = useContext(CartContext);
   // const [correct, setCorrect] = useState(0)
   const { correct, setCorrect, name, setName, googleRequest } = useContext(Authcontext);
   // console.log(correct, " check correct in login ");
@@ -108,6 +110,7 @@ export function Login() {
       localStorage.setItem("flipkartToken", res.data.token);
       localStorage.setItem("flipkartUserName", res.data.name);
       localStorage.setItem("flipkartUserId", res.data.id);
+      getData();
       notify()
     } catch (error) {
       toast(error.response.data.message, {

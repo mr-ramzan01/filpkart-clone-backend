@@ -1,4 +1,5 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
+import { CartContext } from "./CartContext";
 export const Authcontext = createContext();
 
 const AuthContextProvider = ({ children }) => {
