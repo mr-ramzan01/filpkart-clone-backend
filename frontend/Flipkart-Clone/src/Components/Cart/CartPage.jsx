@@ -74,7 +74,7 @@ function CartPage() {
     window.scrollTo(0, 0)
     getData()
     getAddress();
-  }, [count , addQuantityState , lessQuantityState ]);
+  }, [count , addQuantityState , lessQuantityState]);
 
   // console.log(cartData);
 
@@ -82,8 +82,10 @@ function CartPage() {
     onClose();
     fetch(`${carturl}/${Deleteid}`, {
       method: "DELETE",
-    });
-    setCount(count - 1);
+    }).then(() => {
+      getData();
+      setCount(count - 1);
+    })
   };
   
   const handelID = (id) => {
@@ -99,10 +101,12 @@ function CartPage() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ ...data, quantity: data.quantity - 1 }),
-    });
+    }).then((res) => {
+      getData();
+      setLessQuantityState( lessQuantityState - 1 );
+    })
     // console.log(id);
     // setCount(count - 1);
-    setLessQuantityState( lessQuantityState - 1 );
   };
 
   const handelPatchAdd = (data) => {
@@ -114,9 +118,11 @@ function CartPage() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ ...data, quantity: data.quantity + 1 }),
-    });
-    setCount(count + 1);
-    setAddQuantityState(addQuantityState + 1);
+    }).then(() => {
+      getData();
+      setCount(count + 1);
+      setAddQuantityState(addQuantityState + 1);
+    })
   };
 
     const handelDeleteAddress= (id)=>{

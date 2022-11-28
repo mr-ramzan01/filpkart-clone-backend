@@ -231,7 +231,7 @@ const Navbar = () => {
               {
                 data.map((item, index)=>(
                   <Box key={index}>
-                    <NavLink to={`/products/view/${item.item_id}`}>
+                    <NavLink to={`/products/view/${item._id}`}>
                       <Flex gap={2} p='10px 25px' m='10px 0'
                       align={'center'}
                       cursor='pointer'
@@ -532,7 +532,7 @@ const Navbar = () => {
               {
                 data.map((item, index)=>(
                   <Box key={index}>
-                    <NavLink to={`/products/view/${item.item_id}`}>
+                    <NavLink to={`/products/view/${item._id}`}>
                       <Flex gap={2} p='10px 25px' m='10px 0'
                       align={'center'}
                       cursor='pointer'
