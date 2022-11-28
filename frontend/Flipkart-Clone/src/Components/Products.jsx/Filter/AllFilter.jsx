@@ -1,7 +1,48 @@
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Checkbox, CheckboxGroup, Flex, RangeSlider, RangeSliderFilledTrack, RangeSliderThumb, RangeSliderTrack, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
+import { useCheckbox, useCheckboxGroup, chakra } from "@chakra-ui/react"
+import { IoMdCheckbox, ImCheckboxChecked, IoIosCheckbox } from 'react-icons/io'
 
 const Filter = ({ getCheckboxProps, setPriceRange, priceRange }) => {
+    function CustomCheckbox(props) {
+        const { state, getCheckboxProps, getInputProps, getLabelProps, htmlProps } =
+            useCheckbox(props)
+
+        return (
+            <chakra.label
+                display='flex'
+                flexDirection='row'
+                alignItems='center'
+                gridColumnGap={2}
+                maxW='40'
+                // bg='green.50'
+                // border='1px solid'
+                // borderColor='green.500'
+                rounded='lg'
+                px={3}
+                py={1}
+                cursor='pointer'
+                {...htmlProps}
+            >
+                <input {...getInputProps()} hidden />
+                <Flex
+                    alignItems='center'
+                    justifyContent='center'
+                    border='1px solid'
+                    borderColor='rgb(194, 194, 194)'
+                    w={3}
+                    h={3}
+                    {...getCheckboxProps()}
+                >
+                    {state.isChecked && 
+                    // <Box w={2} h={2} border='3px solid' borderColor='rgb(40, 116, 240)' />
+                    <IoIosCheckbox  color='rgb(40, 116, 240)' />
+                    }
+                </Flex>
+                <Text color="gray.700" {...getLabelProps()}>{props.value}</Text>
+            </chakra.label>
+        )
+    }
     return (
         <Accordion defaultIndex={[0, 2, 3, 4]} allowMultiple>
             <AccordionItem p={'5px'}>
@@ -16,13 +57,13 @@ const Filter = ({ getCheckboxProps, setPriceRange, priceRange }) => {
                 <AccordionPanel pb={4}>
                     <CheckboxGroup defaultValue={['']} >
                         <Stack spacing={[1]} direction={['column']} >
-                            <Checkbox spacing='0.8rem' {...getCheckboxProps({ value: 'appliances' })} ><Text fontSize={'small'} fontWeight='500' >Appliances</Text></Checkbox>
-                            <Checkbox spacing='0.8rem' {...getCheckboxProps({ value: 'electronics' })}><Text fontSize={'small'} fontWeight='500'  >Electronics</Text></Checkbox>
-                            <Checkbox spacing='0.8rem' {...getCheckboxProps({ value: "fashion" })} ><Text fontSize={'small'} fontWeight='500'>Faishon</Text></Checkbox>
-                            <Checkbox spacing='0.8rem' {...getCheckboxProps({ value: 'grocery' })} ><Text fontSize={'small'} fontWeight='500' >Groceries</Text></Checkbox>
-                            <Checkbox spacing='0.8rem' {...getCheckboxProps({ value: 'mobiles' })} ><Text fontSize={'small'} fontWeight='500' >Mobiles</Text></Checkbox>
-                            <Checkbox spacing='0.8rem' {...getCheckboxProps({ value: 'home' })} ><Text fontSize={'small'} fontWeight='500' >Home</Text></Checkbox>
-                            <Checkbox spacing='0.8rem' {...getCheckboxProps({ value: 'top_offers' })} ><Text fontSize={'small'} fontWeight='500' >TopOffers</Text></Checkbox>
+                            <CustomCheckbox spacing='0.8rem' {...getCheckboxProps({ value: 'appliances' })} ><Text fontSize={'small'} fontWeight='500' >Appliances</Text></CustomCheckbox>
+                            <CustomCheckbox spacing='0.8rem' {...getCheckboxProps({ value: 'electronics' })}><Text fontSize={'small'} fontWeight='500'  >Electronics</Text></CustomCheckbox>
+                            <CustomCheckbox spacing='0.8rem' {...getCheckboxProps({ value: "fashion" })} ><Text fontSize={'small'} fontWeight='500'>Faishon</Text></CustomCheckbox>
+                            <CustomCheckbox spacing='0.8rem' {...getCheckboxProps({ value: 'grocery' })} ><Text fontSize={'small'} fontWeight='500' >Groceries</Text></CustomCheckbox>
+                            <CustomCheckbox spacing='0.8rem' {...getCheckboxProps({ value: 'mobiles' })} ><Text fontSize={'small'} fontWeight='500' >Mobiles</Text></CustomCheckbox>
+                            <CustomCheckbox spacing='0.8rem' {...getCheckboxProps({ value: 'home' })} ><Text fontSize={'small'} fontWeight='500' >Home</Text></CustomCheckbox>
+                            <CustomCheckbox spacing='0.8rem' {...getCheckboxProps({ value: 'top_offers' })} ><Text fontSize={'small'} fontWeight='500' >TopOffers</Text></CustomCheckbox>
                             {/* <Checkbox spacing='0.8rem' {...getCheckboxProps({ value: 'Books' })} ><Text fontSize={'small'} fontWeight='500'>Books</Text></Checkbox> */}
                         </Stack>
                     </CheckboxGroup>

@@ -11,6 +11,7 @@ import { getProductError, getProductLoading, getProductsSuccess } from '../../Re
 import { useParams } from 'react-router'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import {useSearchParams} from 'react-router-dom'
+import { Example } from './Filter/CustomCheckbox'
 
 // const url = `https://flipkart-data.onrender.com`
 // https://flipkart-data.onrender.com
@@ -27,8 +28,9 @@ const Products = () => {
     const [isLargerThan720] = useMediaQuery('(min-width: 720px)')
 
     const [page, setPage] = useState(searchParams.get("page") || 1);
-    const [category, setCategory] = useState(searchParams.getAll("category_name") || []);
-    const [discount, setDiscount] = useState(searchParams.getAll("discount_gte") || []);
+    const [category, setCategory] = useState(searchParams.getAll("category_name"));
+    const [discount, setDiscount] = useState(searchParams.getAll("discount_gte") || []); //hidden_stars_gte
+    const [hiddenStart, sethiddenStart] = useState(searchParams.getAll("hidden_stars_gte") || []); 
 
     const perPagelimitProduct = 16;
     const [total, setTotal] = useState(0);
@@ -39,8 +41,6 @@ const Products = () => {
     const { loading, error, products } = useSelector((state) => state)
 
     const [priceRange, setPriceRange] = useState([]);
-    // console.log(priceRange, " priceRange ");
-
     const priceRangeurl = 
         priceRange[0] > 0 || priceRange[1] < 100 ?
         `&range=new_price,${priceRange[0] * 10},${priceRange[1] < 100 ? `${priceRange[1] * 10}` : ""}` : "";
@@ -50,20 +50,24 @@ const Products = () => {
     const [placement, setPlacement] = React.useState("")
 
     const [sortprice, setPriceSort] = useState("");
-    // console.log(sortprice);
+    
     let pricesorturl = isLargerThan720 ?
         sortprice === "" ? "" : `&sort=new_price,${sortprice}` :
         placement === "" ? "" : `&sort=new_price,${placement}`
-    let { value, getCheckboxProps } = useCheckboxGroup()
 
-    // console.log(value, " check value checkbox ");
-    let values = [...value, ...category, ...discount]
-    // console.log(values);
+    const [defaultVal, setdefaultVal] = useState([])
+    let { value, getCheckboxProps } = useCheckboxGroup(
+        {defaultValue: [...category, ...discount]}
+        )
+
+    let valuesArrays = [...value, ...category, ...discount, ...hiddenStart]
+    let values = [...new Set(valuesArrays)];
+
     useEffect(() => {
         window.scrollTo(0, 0)
         fetchData()
         // eslint-disable-next-line
-    }, [page, sortprice, priceRangeurl, value, placement])
+    }, [page, sortprice, priceRangeurl, value, placement, ])
 
     const fetchData = () => {
         dispatch(getProductLoading())
@@ -75,6 +79,7 @@ const Products = () => {
         let categoryFlag = false;
         let categ = [];
         let disc = [];
+        let hiddenStr = []
         values.forEach((el) => {
             if (categoryCheckArrurl.includes(el)) {
                 categoryCheck+=`${el},`
@@ -84,6 +89,7 @@ const Products = () => {
             }
             if (el === "3" || el === "4") {
                 tempUrl += `&hidden_stars_gte=${el}`
+                hiddenStr.push(el)
             }
             if (discountCheckArrurl.includes(el)) {
                 tempUrl += `&discount_gte=${el}`
@@ -93,6 +99,7 @@ const Products = () => {
 
         if(categoryFlag){
             tempUrl += `&category_name=${categoryCheck}`
+            // setCategory(categ)
         }
 
         console.log(tempUrl);
@@ -110,7 +117,8 @@ const Products = () => {
             .then((res) => {
                 // setData(res)
                 setTotal(res.total);
-                setSearchParams({page, ...searchParams, "category_name": [...categ], "discount_gte": [...disc]})
+                // console.log("category ", category);
+                setSearchParams({page, ...searchParams, "category_name": [...categ], "discount_gte": [...disc], "hidden_stars_gte":[...hiddenStr]})
                 // console.log(res.product);
                 dispatch(getProductsSuccess(res.product))
             })
@@ -415,6 +423,7 @@ const Products = () => {
                     </Box>
                 </Box>
             </Flex>
+            {/* <Example/> */}
         </Box>
     )
 }
