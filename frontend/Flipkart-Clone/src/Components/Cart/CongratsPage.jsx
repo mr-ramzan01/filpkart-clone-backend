@@ -32,7 +32,7 @@ import Navbar from '../Navbar/navbar';
 
     const deleteCart = () => {
       const userId = localStorage.getItem('flipkartUserId');
-      fetch(`http://localhost:8080/cart/deleteall/${userId}`, {
+      fetch(`https://flipkart-api-new.onrender.com/cart/deleteall/${userId}`, {
         method: 'DELETE'
       }).then((res) => res.json())
       .then((res) => {

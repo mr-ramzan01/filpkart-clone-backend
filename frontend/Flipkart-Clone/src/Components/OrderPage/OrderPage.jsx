@@ -28,7 +28,7 @@ function OrderPage() {
 
     const getOrderPageData = () => {
       const userId = localStorage.getItem("flipkartUserId");
-      fetch(`http://localhost:8080/order/${userId}`)
+      fetch(`https://flipkart-api-new.onrender.com/order/${userId}`)
       .then((res) => res.json())
       .then((res)=> {
         console.log(res, 'order');

@@ -49,7 +49,7 @@ function Viewpage() {
         setLoading(true);
         try {
             console.log(item_id, "iddddd");
-            const res = await fetch(`http://localhost:8080/products/${item_id}`)
+            const res = await fetch(`https://flipkart-api-new.onrender.com/products/${item_id}`)
             const res2 = await res.json()
             // console.log(res2);
             setViewData([{...res2.data}]);
@@ -118,7 +118,7 @@ function Viewpage() {
     const addDatainCart = () => { // viewData[0]
         console.log(viewData[0], " check data 1");
         const token = localStorage.getItem("flipkartToken");
-        fetch(`http://localhost:8080/cart`, {
+        fetch(`https://flipkart-api-new.onrender.com/cart`, {
             method: "POST",
             body: JSON.stringify({ ...viewData[0],token }),
             headers: {

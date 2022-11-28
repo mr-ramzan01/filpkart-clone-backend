@@ -47,7 +47,7 @@ function CartPage() {
   function getAddress(){
     console.log("here");
     const id = localStorage.getItem("flipkartUserId");
-    fetch (`http://localhost:8080/address/${id}`)
+    fetch (`https://flipkart-api-new.onrender.com/address/${id}`)
     .then((res)=>res.json())
     .then((res)=>{
       console.log(res, "add here");
@@ -121,7 +121,7 @@ function CartPage() {
 
     const handelDeleteAddress= (id)=>{
       console.log(id, 'address id');
-      fetch (`http://localhost:8080/address/${id}`, {
+      fetch (`https://flipkart-api-new.onrender.com/address/${id}`, {
         method: 'DELETE'
       })
       .then((res) => res.json())

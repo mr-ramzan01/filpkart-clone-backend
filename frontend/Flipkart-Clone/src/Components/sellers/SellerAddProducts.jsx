@@ -32,7 +32,7 @@ export default function SellerAddProducts() {
                 hidden_stars: +values.hidden_stars,
                 item_id: +values.item_id,
             }
-            fetch(`http://localhost:8080/products/create`, {
+            fetch(`https://flipkart-api-new.onrender.com/products/create`, {
                 method: 'POST',
                 body: JSON.stringify(data),
                 headers: {

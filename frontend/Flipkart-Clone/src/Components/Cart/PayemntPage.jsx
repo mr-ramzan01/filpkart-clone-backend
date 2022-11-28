@@ -73,7 +73,7 @@ function PaymentPage() {
                     Authorization: "Bearer "+token 
                 }
             }
-            fetch(`http://localhost:8080/auth/getLoggedInUser`,obj)
+            fetch(`https://flipkart-api-new.onrender.com/auth/getLoggedInUser`,obj)
             .then((res) => res.json())
             .then((res) => {
                 console.log(res, 'details');

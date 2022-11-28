@@ -12,7 +12,7 @@ export const CartContext = createContext();
 const CartContextProvider = ( {children} )=>{
     // const carturl = `https://flipkart-data.onrender.com/products`
     const token = localStorage.getItem('flipkartToken');
-    const carturl = `http://localhost:8080/cart`
+    const carturl = `https://flipkart-api-new.onrender.com/cart`
     
     const [cartData, SetCartData] = useState([]);
     const [ loading, setLoading ] = useState(false);
