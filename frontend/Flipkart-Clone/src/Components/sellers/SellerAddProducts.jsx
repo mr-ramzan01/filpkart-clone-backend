@@ -45,8 +45,8 @@ export default function SellerAddProducts() {
         }
     });
     return (
-        <Flex bg="gray.100" align="center" justify="center" h="80vh">
-            <Box bg="white" p={6} rounded="md">
+        <Flex bg="gray.100" align="center" justify="center">
+            <Box bg="white" p={6} rounded="md" margin="30px 0">
                 <form onSubmit={formik.handleSubmit}>
                     <Grid spacing={4} templateColumns='repeat(3, 1fr)' gap={6} align="flex-start">
                         <FormControl>

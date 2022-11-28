@@ -103,6 +103,11 @@ export function Login() {
       const res = await axios.post("https://flipkart-api-new.onrender.com/auth/login",inputValues)
       setCorrect(true)
       setName(res.data.name)
+      localStorage.setItem("loginsetName", res.data.name);
+      localStorage.setItem("email", inputValues.email);
+      localStorage.setItem("flipkartToken", res.data.token);
+      localStorage.setItem("flipkartUserName", res.data.name);
+      localStorage.setItem("flipkartUserId", res.data.id);
       notify()
     } catch (error) {
       toast(error.response.data.message, {
