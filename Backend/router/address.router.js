@@ -1,8 +1,10 @@
 import express from 'express'
-import postaddress from '../Controllers/address.controller.js';
+import {postaddress,getaddress,deleteAdress} from '../Controllers/address.controller.js';
 
 const addressRouter = express.Router();
-// productRouter.get('/', getProduct)
-addressRouter.post('/create', postaddress)
+
+addressRouter.post('/create/:id', postaddress)
+addressRouter.get('/:id', getaddress)
+addressRouter.delete('/:id', deleteAdress)
 
 export default addressRouter

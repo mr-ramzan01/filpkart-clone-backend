@@ -29,6 +29,7 @@ const AuthContextProvider = ({ children }) => {
 
   let loginsetName = localStorage.getItem("loginsetName") || localStorage.getItem("flipkartUserName") || "Login"
   const [name, setName] = useState(loginsetName);
+  const [value, setValue] = useState(0);
 
   const [correct, setCorrect] = useState(loginCheck)
 
@@ -47,11 +48,11 @@ const AuthContextProvider = ({ children }) => {
     //     .then(() => setIsAuth(true))
     //     .catch(() => setIsAuth(false));
     // };
-  
+
   
     console.log(correct," check correct in context  ");
     return (
-      <Authcontext.Provider value={{ correct, setCorrect, name, setName, googleRequest }}>
+      <Authcontext.Provider value={{ correct, setCorrect, name, setName, googleRequest, value, setValue }}>
         {children}
       </Authcontext.Provider>
     );

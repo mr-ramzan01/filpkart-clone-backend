@@ -75,7 +75,6 @@ const googleOAuth = async (req, res) => {
     }
 
     let token = generateToken(existingUser);
-
     return res.status(200).send({
       status: "success",
       name: existingUser.name,
