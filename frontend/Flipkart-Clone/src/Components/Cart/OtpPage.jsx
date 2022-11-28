@@ -32,7 +32,7 @@ console.log(realOtp);
 
 
 const handelSubmitOtp= ()=>{
-  console.log(realOtp, value);
+  console.log(realOtp, value,realOtp == value, "fsjhfgsjkh");
   
   if(realOtp == value){
       navigate('/congo')
