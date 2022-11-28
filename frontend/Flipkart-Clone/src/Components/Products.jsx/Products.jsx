@@ -16,6 +16,7 @@ import { Example } from './Filter/CustomCheckbox'
 // const url = `https://flipkart-data.onrender.com`
 // https://flipkart-data.onrender.com
 const url = `https://flipkart-api-new.onrender.com` 
+console.log('h');
 
 const Products = () => {
 
