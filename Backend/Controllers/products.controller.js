@@ -96,6 +96,7 @@ async function getProduct(req,res) {
 async function getProductById(req,res) {
     try {
         let {id} = req.params;
+        console.log(id, 'di');
         const data = await products.findById(id);
         if(!data) {
             return res.status(404).send({

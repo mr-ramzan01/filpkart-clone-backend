@@ -119,7 +119,7 @@ function Fashion() {
             <Box w={{ base: '60%', md: '55%', lg: '70%' }} m="auto" className="OffSlider">
                 <Slider {...settings}>
                     {fashion.filter(item=>item.category_name==="fashion").map((item, index) => 
-                    <NavLink to={`/products/view/${item.item_id}`} key={Date.now()+item.item_id+Math.random()}>
+                    <NavLink to={`/products/view/${item._id}`} key={Date.now()+item._id+Math.random()}>
                     <Box  m="5px" alignItems="center" textAlign={"center"} >
                         <Img maxWidth="190px" h="220px" m="auto" _hover={{ transform: "scale(1.1)", transition: "400ms" }} p="10px" src={item.image} alt="" />
                         <Text fontWeight="500" fontSize={{base:"13px", md:"12px", lg:"14px"}}> {item.description}</Text>
@@ -145,7 +145,7 @@ function Fashion() {
                 <Box className='itemGrid'display={{ base: 'grid', md: 'none', lg: 'none' }}>
                     
                     {fashion.filter(item=>item.category_name==="fashion").map(item =>
-                        <NavLink to={`/products/view/${item.item_id}`} key={Date.now()+item.item_id+Math.random()}>
+                        <NavLink to={`/products/view/${item._id}`} key={Date.now()+item._id+Math.random()}>
                                 <Box  borderRadius="6px" m="5px" bg="white" alignItems="center" textAlign={"center"}  border="1px solid silver">
                             <Img maxWidth="170px" h="170px" m="auto" _hover={{ transform: "scale(1.1)", transition: "400ms" }} p="10px" src={item.image} alt="" />
                                 <Text fontWeight="500" p="5px"> {item.description}</Text>

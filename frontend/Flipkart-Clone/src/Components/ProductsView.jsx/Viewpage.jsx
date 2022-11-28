@@ -48,10 +48,12 @@ function Viewpage() {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const res = await fetch(`https://flipkart-data.onrender.com/all?item_id=${item_id}`)
+            console.log(item_id, "iddddd");
+            const res = await fetch(`http://localhost:8080/products/${item_id}`)
             const res2 = await res.json()
-            console.log(res2);
-            setViewData([...res2]);
+            // console.log(res2);
+            setViewData([{...res2.data}]);
+            console.log(res2, "res2");
             setLoading(false)
         } catch (err) {
             setLoading(false)

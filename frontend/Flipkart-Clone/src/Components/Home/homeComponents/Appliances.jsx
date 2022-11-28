@@ -115,7 +115,7 @@ function Appliances() {
             <Box w={{ base: '80%', md: '75%', lg: '84%' }} m="auto" className='OffSlider'>
                 <Slider {...settings}>
                     {appliances.filter(item=>item.category_name==="appliances").map((item, index) => 
-                    <NavLink to={`/products/view/${item.item_id}`} key={index}>
+                    <NavLink to={`/products/view/${item._id}`} key={index}>
                     <Box m="5px" alignItems="center" textAlign={"center"} >
                     <Img maxWidth="190px" h="200px" m="auto" _hover={{ transform: "scale(1.1)", transition: "400ms" }} p="10px" src={item.image} alt="" />
                         <Text fontWeight="500" p="5px" fontSize={{base:"13px", md:"12px", lg:"14px"}}> {item.description}</Text>
@@ -134,7 +134,7 @@ function Appliances() {
                 <Box className='itemGrid'display={{ base: 'grid', md: 'none', lg: 'none' }} >
 
                     {appliances.filter(item=>item.category_name==="appliances").map((item, index) => 
-                    <NavLink to={`/products/view/${item.item_id}`} key={index+Math.random()}>
+                    <NavLink to={`/products/view/${item._id}`} key={index+Math.random()}>
                     <Box   m="5px" borderRadius="6px" bg="white" alignItems="center" textAlign={"center"} border="1px solid silver">
                     <Img maxWidth="150px" h="150px" m="auto" _hover={{ transform: "scale(1.1)", transition: "400ms" }} p="10px" src={item.image} alt="" />
                         <Text fontWeight="500" p="5px"> {item.description}</Text>

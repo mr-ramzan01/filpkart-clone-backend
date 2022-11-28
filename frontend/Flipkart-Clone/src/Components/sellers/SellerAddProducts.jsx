@@ -40,6 +40,7 @@ export default function SellerAddProducts() {
                 },
             }).then((res)=>res.json())
             .then((res)=>{
+                alert("Successfully Added");
                 console.log(res, " in seller ");
             })
         }

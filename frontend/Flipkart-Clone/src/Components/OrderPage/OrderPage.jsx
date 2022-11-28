@@ -21,6 +21,7 @@ import { CartContext } from '../Context/CartContext';
 function OrderPage() {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [placement, setPlacement] = React.useState('bottom')
+    const date = Date(Date.now());
 
     
     const [orderpageData, setOrderpageData] = useState([]);
@@ -94,7 +95,7 @@ function OrderPage() {
 
                             </Box>
                             <Text fontSize={"14px"} fontWeight={"semibold"}>₹ {item.new_price}</Text>
-                            <Text display="flex" fontSize={"14px"} alignItems="center"> <BiRadioCircle color="green" size="16px" />  Delivery Expected By  Nov 20</Text>
+                            <Text display="flex" fontSize={"14px"} alignItems="center"> <BiRadioCircle color="green" size="16px" />{date.toString().substring(0, 8)}{date.toString().substring(8, 10)}-{date.toString().substring(0, 8)}{+date.toString().substring(8, 10) + Math.floor(Math.random()*4)}</Text>
                         </Flex>
                     ))}
                 </Box>
