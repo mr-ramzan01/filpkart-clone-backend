@@ -1,10 +1,16 @@
-import React, { useContext } from 'react'
-import { useState, useEffect } from 'react'
-import { Login } from './Login'
-import { useNavigate } from 'react-router-dom'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import { Alert, AlertIcon, AlertTitle, Center, position } from '@chakra-ui/react'
+import React, { useContext } from "react";
+import { useState, useEffect } from "react";
+import { Login } from "./Login";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  Center,
+  position,
+} from "@chakra-ui/react";
 import {
   Modal,
   ModalOverlay,
@@ -20,113 +26,133 @@ import {
   Input,
   FormLabel,
   Link,
-} from '@chakra-ui/react'
-import GoogleButton from 'react-google-button'
-import { Authcontext } from '../Context/Authcontext'
+} from "@chakra-ui/react";
+import GoogleButton from "react-google-button";
+import { Authcontext } from "../Context/Authcontext";
+import axios from "axios";
 export function Signup() {
-  const navigate = useNavigate()
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const initialRef = React.useRef(null)
-  const finalRef = React.useRef(null)
+  const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const initialRef = React.useRef(null);
+  const finalRef = React.useRef(null);
 
-  const initialvalues = { email: '', password: '' }
-  const [inputValues, setInputValues] = useState(initialvalues)
-  const [error, setError] = useState({})
-  const [isAuth, setIsAuth] = useState(false)
-  const [isSubmit, setIsSubmit] = useState(false)
-  const { correct, setCorrect, name, setName, googleRequest } = useContext(Authcontext);
+  const initialvalues = { email: "", password: "" };
+  const [inputValues, setInputValues] = useState(initialvalues);
+  const [error, setError] = useState({});
+  const [isAuth, setIsAuth] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(false);
+  const { correct, setCorrect, name, setName, googleRequest } =
+    useContext(Authcontext);
 
-  var flag = false
+  var flag = false;
 
   const handleChange = (inp) => {
-    const { name, value } = inp.target
-    setInputValues({ ...inputValues, [name]: value })
+    const { name, value } = inp.target;
+    setInputValues({ ...inputValues, [name]: value });
     // console.log(inputValues);
-  }
+  };
 
-  const handleSignup = (body) => {
-    fetch(`https://flipkart-api-new.onrender.com/Userdetails`)
-      .then((res) => res.json())
-      .then((res) => {
-        res.map((el) => {
-          if (el.email == body.email) {
-            flag = true
-          }
-        })
-      })
-      .then(() => {
-        if (flag == false) {
-          console.log(inputValues + ' ')
-          console.log(flag + 'raj')
-          fetch(`https://flipkart-api-new.onrender.com/Userdetails`, {
-            method: 'POST',
-            body: JSON.stringify(body),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
-            .then(() => {
-              setIsAuth(true)
-              notify()
-            })
+  const handleSignup = async (body) => {
+    // fetch(`https://flipkart-api-new.onrender.com/Userdetails`)
+    //   .then((res) => res.json())
+    //   .then((res) => {
+    //     res.map((el) => {
+    //       if (el.email == body.email) {
+    //         flag = true
+    //       }
+    //     })
+    //   })
+    //   .then(() => {
+    //     if (flag == false) {
+    //       console.log(inputValues + ' ')
+    //       console.log(flag + 'raj')
+    //       fetch(`https://flipkart-api-new.onrender.com/Userdetails`, {
+    //         method: 'POST',
+    //         body: JSON.stringify(body),
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //         },
+    //       })
+    //         .then(() => {
+    //           setIsAuth(true)
+    //           notify()
+    //         })
 
-            .catch(() => setIsAuth(false))
-        } else {
-          check()
-        }
-      })
-  }
+    //         .catch(() => setIsAuth(false))
+    //     } else {
+    //       check()
+    //     }
+    //   })
+
+    const name = inputValues.email.split("@");
+    const data = {
+      ...inputValues,
+      name: name[0],
+    };
+
+    try {
+      let res = await axios.post(
+        "https://flipkart-api-new.onrender.com/auth/register",
+        data
+      );
+      notify()
+    } catch (error) {
+      toast(error.response.data.message, {
+        position: "top-center",
+      });
+    }
+  };
 
   const notify = () => {
-    toast('SignUp SuccesFully', {
-      position: 'top-center',
-      autoClose:"1000"
-    })
-  }
+    toast("SignUp SuccesFully", {
+      position: "top-center",
+      autoClose: "1000",
+    });
+    onClose();
+  };
 
   const check = () => {
-    toast.error('Already Exist', {
-      position: 'top-center',
-      autoClose:"1000"
-    })
-  }
+    toast.error("Already Exist", {
+      position: "top-center",
+      autoClose: "1000",
+    });
+  };
 
   const validate = (values) => {
-    const errors = {}
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i
-    if (values.email == '') {
-      errors.email = 'email is required'
+    const errors = {};
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    if (values.email == "") {
+      errors.email = "email is required";
     } else if (!regex.test(values.email)) {
-      errors.email = 'Enter a valid email'
+      errors.email = "Enter a valid email";
     }
-    if (values.password == '') {
-      errors.password = 'password is required'
+    if (values.password == "") {
+      errors.password = "password is required";
     } else if (values.password.length < 6) {
-      errors.password = 'password must not be less than 6 character'
-    }else{
-      handleSignup(values)
+      errors.password = "password must not be less than 6 character";
+    } else {
+      handleSignup(values);
     }
-    return errors
-  }
+    return errors;
+  };
 
   useEffect(() => {
     if (Object.keys(error).length === 0 && isSubmit) {
     }
-  }, [error])
+  }, [error]);
 
-  const handleSubmit = (cb,e) => {
-    e.preventDefault()
-    setError(validate(inputValues))
-    setIsSubmit(true)
-    setInputValues(initialvalues)
-    cb()
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setError(validate(inputValues));
+    setIsSubmit(true);
+    setInputValues(initialvalues);
     // navigate('/login')
-  }
+  };
 
   return (
     <>
       <Button
-        _hover={{ bg: 'white' }}
+        _hover={{ bg: "white" }}
         fontWeight="400"
         marginBottom="2"
         bg="white"
@@ -155,7 +181,7 @@ export function Signup() {
               marginRight="-3.5rem"
               marginTop="-4"
             />
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: "flex" }}>
               <Box height="32rem" bg="#2874f0" width="16rem" padding="35px">
                 <Text fontWeight="600" color="white" fontSize="2xl">
                   Looks like you're new here!
@@ -207,27 +233,24 @@ export function Signup() {
                   </Text>
 
                   <Text marginTop="7" fontSize="xs">
-                    By continuing, you agree to Flipkart's{' '}
+                    By continuing, you agree to Flipkart's{" "}
                     <Link color="#2f74f0" href="">
-                      Terms of Use{' '}
+                      Terms of Use{" "}
                     </Link>
-                    and{' '}
+                    and{" "}
                     <Link color="#2f74f0" href="">
                       Privacy Policy.
                     </Link>
                   </Text>
-                  
+
                   <Button
-                    onClick={(e) => 
-                      handleSubmit(onClose,e)
-                    }
+                    onClick={handleSubmit}
                     borderRadius="0.5"
                     marginTop="4"
                     padding="6"
                     color="white"
                     bg="#fb641b"
                     width="19.7rem"
-                   
                   >
                     CONTINUE
                   </Button>
@@ -241,13 +264,16 @@ export function Signup() {
                     color="#2f74f0"
                     bg="#fff"
                     width="19.7rem"
-                    _hover={'#fff'}
+                    _hover={"#fff"}
                   >
                     Existing User?{<Login />}
                   </Button>
                 </FormControl>
-                <Center mt='25px'>
-                  <GoogleButton onClick={googleRequest} label='Continue in with Google'/>
+                <Center mt="25px">
+                  <GoogleButton
+                    onClick={googleRequest}
+                    label="Continue in with Google"
+                  />
                 </Center>
               </Box>
             </div>
@@ -255,5 +281,5 @@ export function Signup() {
         </ModalContent>
       </Modal>
     </>
-  )
+  );
 }

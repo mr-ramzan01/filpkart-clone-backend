@@ -64,6 +64,7 @@ export function Login() {
   let checkOtp = (e) => {
     setIsAuth(e.target.value);
   };
+  
   // console.log(isAuth);
   const handleChange = (inp) => {
     const { name, value } = inp.target;
@@ -73,30 +74,41 @@ export function Login() {
 
 
 
-  const handlelogin = (inputValues) => {
-    fetch(`https://flipkart-data.onrender.com/Userdetails`)
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res, " check res in 67");
-        let test2 = res.filter((el) => {
-          return (
-            el.email === inputValues.email &&
-            el.password === inputValues.password
-          );
-        });
-        if (test2.length === 1) {
-          // setCorrect(true)
-          notify();
-          setName(test2[0].email.slice(0, 5));
-        } else {
-          setIncorrect(true);
-          check();
-        }
-        console.log(res, test2, " check res in 74");
-      })
-      .catch((err) => {
-        console.log(err);
+  const handlelogin =async (inputValues) => {
+    // fetch(`https://flipkart-data.onrender.com/Userdetails`)
+    //   .then((res) => res.json())
+    //   .then((res) => {
+    //     console.log(res, " check res in 67");
+    //     let test2 = res.filter((el) => {
+    //       return (
+    //         el.email === inputValues.email &&
+    //         el.password === inputValues.password
+    //       );
+    //     });
+    //     if (test2.length === 1) {
+    //       // setCorrect(true)
+    //       notify();
+    //       setName(test2[0].email.slice(0, 5));
+    //     } else {
+    //       setIncorrect(true);
+    //       check();
+    //     }
+    //     console.log(res, test2, " check res in 74");
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+    console.log(inputValues)
+    try {
+      const res = await axios.post("https://flipkart-api-new.onrender.com/auth/login",inputValues)
+      setCorrect(true)
+      setName(res.data.name)
+      notify()
+    } catch (error) {
+      toast(error.response.data.message, {
+        position: "top-center",
       });
+    }
   };
 
   const notify = () => {
